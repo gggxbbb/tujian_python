@@ -5,6 +5,14 @@
 
 # 快速开始
 前往 [Releases](https://github.com/gggxbbb/tujian_python/releases) 下载对应系统的最新版本
+## Windows
+双击 `TujianP_Windows.exe` 直接运行
+## Linux
+```
+chmod 777 TujianP_Linux
+./TujianP_Linux
+```
+当然也可以重命名一下啥的
 
 # 如何使用
 ## Windows
