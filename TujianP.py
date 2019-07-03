@@ -15,6 +15,8 @@ dir = './Tujian/'
 if not os.path.isdir(dir):
     os.makedirs(dir)
 
+print('>>>Welcone!<<<')
+
 def getImage(name,pic):
     title = pic['p_title'].replace('/','&').replace('\\','&')
     date = pic['p_date']
@@ -119,10 +121,11 @@ def serverTest():
         print('发生错误 请重试')
     else:
         print('服务器正常')
-        print('>>>TujianP<<<')
         start()
 
 def start():
+    print('')
+    print('>>>TujianP<<<')
     print('选择操作:')
     print('0.退出')
     print('1.获取全部')
@@ -131,6 +134,7 @@ def start():
     print('98.搜索')
     print('99.关于')
     print('100.服务器测试')
+    print('')
     event = input('请输入操作前数字>')
     if event == "0":
         exit()
@@ -141,9 +145,9 @@ def start():
     elif event == '3':
         getPicBySort()
     elif event == '98':
-        print('请至 AppStore(Apple) 或其它应用商店(Android)下载 Tujian 或其它第三方版本体验此功能和其它高级功能')
+        print(':)请至 AppStore(Apple) 或其它应用商店(Android)下载 Tujian 或其它第三方版本体验此功能和其它高级功能')
     elif event == "99":
-        print('这是一个使用 Python 编写的，用于获取 Tujian 图片的简易工具')
+        print(':)这是一个使用 Python 编写的，用于获取 Tujian 图片的简易工具')
     elif event == '100':
         serverTest()
     else:
