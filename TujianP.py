@@ -3,6 +3,7 @@
 from urllib import request
 from urllib.request import urlretrieve
 from urllib import error
+from urllib import parse
 import json
 import os
 import signal
@@ -35,6 +36,7 @@ signal.signal(signal.SIGINT,exitTujian)
 signal.signal(signal.SIGTERM,exitTujian)
 
 header = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
+TID_TNAME={'4ac1c07f-a9f7-11e8-a8ea-0202761b0892':'插画','5398f27b-a9f7-11e8-a8ea-0202761b0892':'杂烩','e5771003-b4ed-11e8-a8ea-0202761b0892':'电脑壁纸'}
 
 dir = './Tujian/'
 if not os.path.isdir(dir):
@@ -42,7 +44,8 @@ if not os.path.isdir(dir):
 
 print('>>>Welcone!<<<')
 
-def getImage(name,pic):
+def getImage(pic):
+    name = TID_TNAME[pic['TID']]
     title = pic['p_title'].replace('/','&').replace('\\','&')
     date = pic['p_date']
     pid = pic['PID']
@@ -51,15 +54,12 @@ def getImage(name,pic):
     path = './Tujian/%s-%s_%s_%s.%s.jpeg'%(date,name,title,pid,user)
     if not os.path.isfile(path):
         print('正在获取%s %s %s'%(name,title,link))
-        if (link.find('i.loli.net') != -1) or (link.find('ooo.0o0.ooo') != -1):
-            print('站外图片，跳过')
-        else:
-            req = request.Request(link, headers=header)
-            data = request.urlopen(req).read()
-            with open(path, 'wb') as f:
-                f.write(data)
-                f.close()
-                print('%s 已保存'%path)
+        req = request.Request(link, headers=header)
+        data = request.urlopen(req).read()
+        with open(path, 'wb') as f:
+            f.write(data)
+            f.close()
+            print('%s 已保存'%path)
     else:
         print("%s 已存在"%path)
 
@@ -71,7 +71,7 @@ def getPics(name,tid,page):
     dataPics = json.loads(reqPics.read().decode('utf-8'))
     print('获取 %s 第 %s 页原始数据:OK'%(name,page))
     for pic in dataPics["result"]:
-        getImage(name,pic)
+        getImage(pic)
     print('获取 %s 第 %s 页:OK'%(name,page))
     if (page < dataPics['maxpage']):
         print('%s 共%s页'%(name,dataPics['maxpage']))
@@ -80,14 +80,15 @@ def getPics(name,tid,page):
         print('获取 %s :OK'%name)
 
 def getSort():
-    print('获取分类')
-    reqSortUrl=request.Request(url='https://api.dpic.dev/sort/',
-    headers=header)
-    reqSort = request.urlopen(reqSortUrl)
-    dataSort = reqSort.read().decode('utf-8')
-    tujianSort = json.loads(dataSort)
-    print('获取分类:OK')
-    return tujianSort["result"]
+    # print('获取分类')
+    # reqSortUrl=request.Request(url='https://api.dpic.dev/sort/',
+    # headers=header)
+    # reqSort = request.urlopen(reqSortUrl)
+    # dataSort = reqSort.read().decode('utf-8')
+    # tujianSort = json.loads(dataSort)
+    # print('获取分类:OK')
+    # return tujianSort["result"]
+    return [{"TID":"4ac1c07f-a9f7-11e8-a8ea-0202761b0892","T_NAME":"插画"},{"TID":"5398f27b-a9f7-11e8-a8ea-0202761b0892","T_NAME":"杂烩"},{"TID":"e5771003-b4ed-11e8-a8ea-0202761b0892","T_NAME":"电脑壁纸"}]
 
 def getAll():
     picSort = getSort()
@@ -106,7 +107,7 @@ def chooseSort(sort):
         print('>%s'%sortName)
         picSort[sortName] = sortTID
     print('输入 0 退出')
-    print('输入 1 返回操作列表')
+    print('输入 1 返回上一级')
     iSort = input('输入分类名>')
     if iSort == "0":
         exitTujianP()
@@ -131,9 +132,38 @@ def getToday():
     tujianToday = json.loads(dataToday)
     print('获取今日图片原始数据:OK')
     for pic in tujianToday:
-        getImage(pic['T_NAME'],pic)
+        getImage(pic)
     print('获取今日图片:OK')
-        
+
+def getPicByID(pics):
+    print('输入 0 返回上一级')
+    id = input("输入序号(1~%s)>"%len(pics))
+    if id == '0':
+        return
+    try:
+        id = int(id)
+        pic = pics[id-1]
+        getImage(pic)
+    except:
+        print('输入错误 请重试')
+        print('')
+        getPicByID(pics)
+
+def searchPic():
+    info = parse.quote(input('输入关键字>'))
+    reqSearUrl = request.Request(url='https://api.dpic.dev/search/s/%s'%info,
+    headers=header)
+    reqSear = request.urlopen(reqSearUrl)
+    dataSear = json.loads(reqSear.read().decode('utf-8'))
+    tujianSear = dataSear['result']
+    print('搜索结果(共 %s 个):'%dataSear['total'])
+    print('')
+    for info in enumerate(tujianSear):
+        pic = info[1]
+        print('%s. %s\n%s\n'%(info[0]+1,pic['p_title'],pic['p_content']))
+    getPicByID(tujianSear)
+
+
 def serverTest():
     try:
         print('尝试与服务器建立连接')
@@ -150,13 +180,13 @@ def start():
     print('')
     print('>>>TujianP<<<')
     print('选择操作:')
-    print('0.退出')
-    print('1.获取全部')
-    print('2.获取今日')
-    print('3.按分类获取全部')
-    print('98.搜索')
-    print('99.关于')
-    print('100.服务器测试')
+    print('0. 退出')
+    print('1. 获取全部')
+    print('2. 获取今日')
+    print('3. 按分类获取全部')
+    print('4. 搜索')
+    print('99. 关于')
+    print('100. 服务器测试')
     print('')
     event = input('请输入操作前数字>')
     print('')
@@ -168,6 +198,8 @@ def start():
         getToday()
     elif event == '3':
         getPicBySort()
+    elif event == '4':
+        searchPic()
     elif event == '98':
         print(':)请至 AppStore(Apple) 或其它应用商店(Android)下载 Tujian 或其它第三方版本体验此功能和其它高级功能')
     elif event == "99":
