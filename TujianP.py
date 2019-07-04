@@ -11,7 +11,6 @@ import signal
 #请使用Python3
 
 def exitTujianP():
-    print('')
     event = input('确认要退出吗?(Y/n)')
     print('')
     if event.lower() == "y": 
@@ -26,7 +25,11 @@ def exitTujianP():
         return
 
 def exitTujian(signum,frame):
-    exitTujianP()
+    print('\n')
+    print('再见')
+    print('>>>TujianP<<<')
+    print('')
+    exit()
 
 signal.signal(signal.SIGINT,exitTujian)
 signal.signal(signal.SIGTERM,exitTujian)
