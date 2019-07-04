@@ -172,9 +172,9 @@ def serverTest():
         request.urlopen(reqTestUrl)
     except error.HTTPError as err:
         print('服务器已去世 错误信息: %s'%err)
+        exit()
     else:
         print('服务器正常')
-        start()
 
 def start():
     print('')
@@ -210,5 +210,5 @@ def start():
         print('输入错误 请重试')
     start()
         
-#start()
 serverTest()
+start()
