@@ -5,9 +5,23 @@ from urllib.request import urlretrieve
 from urllib import error
 import json
 import os
+import signal
 
 #注意，游标卡尺的单位长度为4
 #请使用Python3
+
+def exitTujianP():
+    print('')
+    print(' (。・∀・)ノ 再见！')
+    print('>>>TujianP<<<')
+    print('')
+    exit()
+
+def exitTujian(signum,frame):
+    exitTujianP()
+
+signal.signal(signal.SIGINT,exitTujian)
+signal.signal(signal.SIGTERM,exitTujian)
 
 header = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
 
@@ -84,7 +98,7 @@ def chooseSort(sort):
     print('输入 1 返回操作列表')
     iSort = input('输入分类名>')
     if iSort == "0":
-        exit()
+        exitTujianP()
     elif iSort == "1":
         return
     else:
@@ -117,8 +131,6 @@ def serverTest():
         request.urlopen(reqTestUrl)
     except error.HTTPError as err:
         print('服务器已去世 错误信息: %s'%err)
-    except:
-        print('发生错误 请重试')
     else:
         print('服务器正常')
         start()
@@ -136,8 +148,9 @@ def start():
     print('100.服务器测试')
     print('')
     event = input('请输入操作前数字>')
+    print('')
     if event == "0":
-        exit()
+        exitTujianP()
     elif event == '1':
         getAll()
     elif event == '2':
