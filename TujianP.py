@@ -137,7 +137,7 @@ def getToday():
 
 def getPicByID(pics):
     print('输入 0 返回上一级')
-    id = input("输入序号(1~%s)>"%len(pics))
+    id = input("输入序号>")
     if id == '0':
         return
     try:
