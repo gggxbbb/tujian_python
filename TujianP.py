@@ -12,10 +12,18 @@ import signal
 
 def exitTujianP():
     print('')
-    print(' (。・∀・)ノ 再见！')
-    print('>>>TujianP<<<')
+    event = input('确认要退出吗?(Y/n)')
     print('')
-    exit()
+    if event.lower() == "y": 
+        print('再见')
+        print('>>>TujianP<<<')
+        print('')
+        exit()
+    elif event.lower() == "n":
+        return
+    else:
+        print('虽然不知道你输入了什么，但一定是想留下的，对吧？')
+        return
 
 def exitTujian(signum,frame):
     exitTujianP()
