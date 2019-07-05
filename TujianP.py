@@ -137,8 +137,14 @@ def getToday():
 
 def getPicByID(pics):
     print('输入 0 返回上一级')
+    print('输入 a 获取所有结果')
     id = input("输入序号>")
+    print('')
     if id == '0':
+        return
+    elif id == 'a':
+        for pic in pics:
+            getImage(pic)
         return
     try:
         id = int(id)
@@ -156,6 +162,11 @@ def searchPic():
     reqSear = request.urlopen(reqSearUrl)
     dataSear = json.loads(reqSear.read().decode('utf-8'))
     tujianSear = dataSear['result']
+    total = dataSear['total']
+    print('')
+    if total == 0:
+        print('无搜索结果')
+        return
     print('搜索结果(共 %s 个):'%dataSear['total'])
     print('')
     for info in enumerate(tujianSear):
