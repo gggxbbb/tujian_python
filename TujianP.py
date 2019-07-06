@@ -27,7 +27,7 @@ def exitTujianP():
 
 def exitTujian(signum,frame):
     print('\n')
-    print('再见')
+    print('>>>再见<<<')
     print('>>>TujianP<<<')
     print('')
     exit()
@@ -42,7 +42,7 @@ dir = './Tujian/'
 if not os.path.isdir(dir):
     os.makedirs(dir)
 
-print('>>>Welcone!<<<')
+print('>>>Welcome!<<<')
 
 def getImage(pic):
     name = TID_TNAME[pic['TID']]
