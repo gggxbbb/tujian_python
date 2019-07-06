@@ -15,7 +15,7 @@ def exitTujianP():
     event = input('确认要退出吗?(Y/n)')
     print('')
     if event.lower() == "y": 
-        print('再见')
+        print('>>>再见<<<')
         print('>>>TujianP<<<')
         print('')
         exit()
