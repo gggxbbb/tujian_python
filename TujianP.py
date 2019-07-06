@@ -184,6 +184,9 @@ def serverTest():
     except error.HTTPError as err:
         print('服务器已去世 错误信息: %s'%err)
         exit()
+    except error.URLError as err:
+        print('服务器已失联 错误信息: %s'%err)
+        exit()
     else:
         print('服务器正常')
 
