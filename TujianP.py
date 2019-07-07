@@ -155,6 +155,7 @@ def getAll():
         sortTID = m["TID"]
         print('获取 %s TID: %s'%(sortName,sortTID))
         getPics(sortName,sortTID,1)
+    print('获取全部图片:OK')
 
 def searchPic():
     info = parse.quote(input('输入关键字>'))
