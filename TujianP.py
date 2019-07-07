@@ -90,14 +90,6 @@ def getSort():
     # return tujianSort["result"]
     return [{"TID":"4ac1c07f-a9f7-11e8-a8ea-0202761b0892","T_NAME":"插画"},{"TID":"5398f27b-a9f7-11e8-a8ea-0202761b0892","T_NAME":"杂烩"},{"TID":"e5771003-b4ed-11e8-a8ea-0202761b0892","T_NAME":"电脑壁纸"}]
 
-def getAll():
-    picSort = getSort()
-    for m in picSort:
-        sortName = m["T_NAME"]
-        sortTID = m["TID"]
-        print('获取 %s TID: %s'%(sortName,sortTID))
-        getPics(sortName,sortTID,1)
-
 def chooseSort(sort):
     picSort = {}
     print('请选择分类')
@@ -154,6 +146,15 @@ def getPicByID(pics):
         print('输入错误 请重试')
         print('')
         getPicByID(pics)
+
+def getAll():
+    getToday()
+    picSort = getSort()
+    for m in picSort:
+        sortName = m["T_NAME"]
+        sortTID = m["TID"]
+        print('获取 %s TID: %s'%(sortName,sortTID))
+        getPics(sortName,sortTID,1)
 
 def searchPic():
     info = parse.quote(input('输入关键字>'))
