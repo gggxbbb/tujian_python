@@ -80,14 +80,6 @@ def getPics(name,tid,page):
         print('获取 %s :OK'%name)
 
 def getSort():
-    # print('获取分类')
-    # reqSortUrl=request.Request(url='https://api.dpic.dev/sort/',
-    # headers=header)
-    # reqSort = request.urlopen(reqSortUrl)
-    # dataSort = reqSort.read().decode('utf-8')
-    # tujianSort = json.loads(dataSort)
-    # print('获取分类:OK')
-    # return tujianSort["result"]
     return [{"TID":"4ac1c07f-a9f7-11e8-a8ea-0202761b0892","T_NAME":"插画"},{"TID":"5398f27b-a9f7-11e8-a8ea-0202761b0892","T_NAME":"杂烩"},{"TID":"e5771003-b4ed-11e8-a8ea-0202761b0892","T_NAME":"电脑壁纸"}]
 
 def chooseSort(sort):
