@@ -9,21 +9,24 @@
 确保拥有 `Git` 和 `Python3` 环境
 ```
 git clone https://github.com/gggxbbb/tujian_python.git
-python ./tujian_python/TujianP.py
+cd tujian_python
+python ./TujianP.py
 ```
 
 ## Linux
 确保拥有 `Git` 和 `Python3` 环境
 ```
 git clone https://github.com/gggxbbb/tujian_python.git
-python3 ./tujian_python/TujianP.py
+cd tujian_python
+python3 ./TujianP.py
 ```
 
 ## Mac OS
 确保拥有 `Git` 和 `Python3` 环境
 ```
 git clone https://github.com/gggxbbb/tujian_python.git
-python3 ./tujian_python/TujianP.py
+cd tujian_python
+python3 ./TujianP.py
 ```
 
 ## Android
