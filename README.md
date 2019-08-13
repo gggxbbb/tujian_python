@@ -27,7 +27,7 @@ python3 ./TujianP.py
 ```
 git clone https://github.com/gggxbbb/tujian_python.git
 cd tujian_python
-python3 ./TujianP.py
+python ./TujianP.py
 ```
 
 ## Android
