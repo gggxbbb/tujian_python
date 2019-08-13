@@ -6,7 +6,8 @@
 # 如何使用
 以下为基本使用方法  
 ## Windows
-确保拥有 `Git` 和 `Python3` 环境
+确保拥有 `Git` 和 `Python3` 环境  
+**注意**，在 `Windows` 上输出没有着色(太烦了)
 ```
 git clone https://github.com/gggxbbb/tujian_python.git
 cd tujian_python
