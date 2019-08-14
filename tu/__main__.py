@@ -1,9 +1,9 @@
 import sys
 import os
 import signal
-from utils.help import TujianHelper
-from utils.tools import printSort,getToday,getArchive,getAll
-from utils import print2
+from .helper import TujianHelper
+from .tools import printSort,getToday,getArchive,getAll
+from . import print2
 
 par = sys.argv[1:]
 
