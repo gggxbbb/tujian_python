@@ -1,2 +1,5 @@
 /Tujian
 __pycache__
+/build
+/dist
+*.spec

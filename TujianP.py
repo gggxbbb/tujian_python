@@ -5,9 +5,7 @@ from utils.help import TujianHelper
 from utils.tools import printSort,getToday,getArchive,getAll
 from utils import print2
 
-par = sys.argv
-if par[0] == __file__:
-    par = par[1:]
+par = sys.argv[1:]
 
 dir = './Tujian/'
 if not os.path.isdir(dir):
