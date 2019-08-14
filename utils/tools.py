@@ -3,7 +3,7 @@ import os,sys
 
 def getImage(pic,path,sort):
     name = sort[pic['TID']]
-    title = pic['p_title'].replace('/','&').replace('\\','&')
+    title = pic['p_title'].replace('/','&').replace('\\','&').replace(':','')
     date = pic['p_date']
     pid = pic['PID']
     link = pic['local_url']+'?p=0'
