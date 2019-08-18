@@ -22,3 +22,6 @@ def getSortList():
 
 def getArchive(TID,page):
     return getData('https://v2.api.dailypics.cn/list/?page=%s&size=15&sort=%s'%(page,TID))
+
+def getWebLink(PID):
+    return 'https://www.dailypics.cn/member/id/%s'%PID

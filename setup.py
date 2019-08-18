@@ -7,7 +7,7 @@ with open("README.md", "r" , encoding='UTF-8') as fh:
 
 setuptools.setup(
     name="tu",
-    version="0.0.5",
+    version="0.0.6",
     author="gggxbbb",
     author_email="gamegxb@163.com",
     description="A simlpe tool for Tujian",
@@ -16,7 +16,11 @@ setuptools.setup(
     url="https://github.com/gggxbbb/tujian_python",
     packages=setuptools.find_packages(),
     python_requires='>=3',
-    install_requires=[],
+    install_requires=[
+        'qrcode>=6.0',
+        'pillow>=6.0.0',
+        'image>=1.5.0'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

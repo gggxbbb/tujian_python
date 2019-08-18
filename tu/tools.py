@@ -1,4 +1,5 @@
 from . import Tujian,Http,print2
+import qrcode
 import os,sys
 
 def getImage(pic,path,sort):
@@ -63,3 +64,8 @@ def getAll(path):
     getToday(path,sort)
     for k in sort:
         getArchive(['',k],path,sort)
+
+def printQrcode(PID):
+    qr = qrcode.QRCode()
+    qr.add_data(Tujian.getWebLink(PID))
+    qr.print_ascii(invert=True)
