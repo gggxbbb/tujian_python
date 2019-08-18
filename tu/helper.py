@@ -12,6 +12,7 @@ message = [
     'sort                加载分类列表',
     'archive <TID>       根据 TID 获取图片, 不含当日图片',
     'all                 获取所有图片',
+    'info <PID>          根据 PID 查询图片信息',
     #'img <PID>           根据 PID 获取图片',
     #'search <KEY>        搜索图片',
     'help                查看帮助',
@@ -44,6 +45,10 @@ detail = {
     ],
     'all': [
         '获得所有图片'
+    ],
+    'info':[
+        '需要参数 PID',
+        '查询指定图片的信息'
     ],
     'img': ['...'],
     'search': ['...'],

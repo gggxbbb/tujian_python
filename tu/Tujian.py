@@ -25,3 +25,6 @@ def getArchive(TID,page):
 
 def getWebLink(PID):
     return 'https://www.dailypics.cn/member/id/%s'%PID
+
+def getPicData(PID):
+    return getData('https://v2.api.dailypics.cn/member?id=%s'%PID)
