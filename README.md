@@ -6,6 +6,6 @@
 # 如何使用
 以下为基本使用方法  
 ```
-pip3 install tu
+pip3 install tuF
 python3 -m tu
 ```
