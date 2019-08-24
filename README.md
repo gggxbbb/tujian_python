@@ -1,4 +1,5 @@
 # Tujian Python
+[![Build Status](https://travis-ci.org/gggxbbb/tujian_python.svg?branch=master)](https://travis-ci.org/gggxbbb/tujian_python)  
 A simple tool for Tujian written by Python3.  
 The all pictures are saved in a folder called `Tujian` where you use the tool.  
 If you cannot understand,you can use `python3 -m tu path` to print the path to save the all pictures.  

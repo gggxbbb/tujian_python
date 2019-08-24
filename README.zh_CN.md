@@ -1,4 +1,5 @@
 # Tujian Python
+[![Build Status](https://travis-ci.org/gggxbbb/tujian_python.svg?branch=master)](https://travis-ci.org/gggxbbb/tujian_python)  
 一个使用 Python3 编写的 Tujian 的简易工具。  
 图片保存于当前目录下的 `Tujian` 文件夹。  
 如果你无法理解，你可以使用 `python3 -m tu path` 来打印存储图片的路径。  
