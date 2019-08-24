@@ -2,7 +2,7 @@ import sys
 import os
 import signal
 from .helper import TujianHelper
-from .tools import printSort, getToday, getArchive, getAll, printInfo
+from .tools import printSort, getToday, getArchive, getAll, printByPID
 from . import print2
 
 par = sys.argv[1:]
@@ -46,7 +46,7 @@ elif key == 'all':
     getAll(path)
 
 elif key == 'info':
-    printInfo(par)
+    printByPID(par)
 
 else:
     print2.error('找不到这个命令')

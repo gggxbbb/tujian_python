@@ -1,0 +1,9 @@
+deploy:
+  provider: pypi
+  user: "gggxbbb"
+  password:
+    secure: w3ubmQljkycqRNGzfCo0Vn32looYkK96YV6wSPC5WLwVK5+l8xVSPIHX9pVLPpEDKYPCNo33s75rfmCmJY4N6/2N0/rG1CmWteXydQKhzInHDzDJP7OOZz8Zngnj7vRyt8wa3oCYjLCkcUQSBcsyUJlVVkD5ZHyZ1bRyMJPNojDqeuUVtO5fw/ejUvUaV5Bzh2N+xR/K7YfHuOqpAK7eEuq5qTmz+AGuPMUr47LnTqWdQmTLROuDlzlLetGFyMjSS31vns9kMoxiq7ABaWNHmcLVu1CruUC1SAh6sCth/oYU0LVqufJFLYrXBzbGdjHezlzuRgDw+em+xYjUOTkiqDy22Rkkh3PNv43X0FEE2MPxPB2gLEqMO8NbbIwS1gGWg3b/l+1yRjWN3iUcxzGtD8K7lXFiatHiQy5/BvhVl1oCxA+Bv9JLyQTzVPjSXS5cyh+swT88KAnlOPdzHS1bTAlI9D5rFagGvt7tyzEi+p+7zLkIehB6N0eK8UMJL/4WAFhPWiRbOIZDbnBQZdW51qvbvuc6p+qGC8DiUFKTLEnf9oJBmcBv2T11AalIt1kFrnfRMSIbqXhrHYlePTFwljeXfu33YWypx9mSXQXqdeZo7IO2x8gLR7MxI+EW68yGGgfxjTXl2lhiQ064wPOOVgg1sSe2q2ZsY3eQvEGU3F4=
+  on:
+    all_branches: true
+  skip_existing: true
+  skip_cleanup: true

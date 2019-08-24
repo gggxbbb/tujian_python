@@ -80,7 +80,25 @@ def printQrcode(PID):
     qr.print_ascii(invert=True)
 
 
-def printInfo(par):
+def printInfo(data, sort=None):
+    if sort == None:
+        sort = Tujian.getSortList()
+    print('「%s」' % data['p_title'])
+    print('%s %s %s×%s @%s' % (
+        data['p_date'],
+        sort[data['TID']],
+        data['width'],
+        data['height'],
+        data['username']
+    ))
+    print('')
+    print(data['p_content'])
+    print('')
+    print('访问 %s 或扫描二维码查看详情' % Tujian.getWebLink(data['PID']))
+    printQrcode(data['PID'])
+
+
+def printByPID(par):
     sort = Tujian.getSortList()
     try:
         PID = par[1]
@@ -93,16 +111,4 @@ def printInfo(par):
     except:
         print2.error('没有这张图片')
         sys.exit(1)
-    print('「%s」' % data['p_title'])
-    print('%s %s %s×%s @%s' % (
-        data['p_date'],
-        sort[data['TID']],
-        data['width'],
-        data['height'],
-        data['username']
-    ))
-    print('')
-    print(data['p_content'])
-    print('')
-    print('访问 %s 或扫描二维码查看详情' % Tujian.getWebLink(PID))
-    printQrcode(PID)
+    printInfo(data, sort)
