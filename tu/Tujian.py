@@ -6,11 +6,16 @@ def getData(url):
     print2.print2.message('获取中...')
     data = Http.getJson(url)
     print2.print2.message('\r')
+    if data == 1:
+        return 1
     return data
 
 
 def getSort():
-    return getData('https://v2.api.dailypics.cn/sort')['result']
+    try:
+        return getData('https://v2.api.dailypics.cn/sort')['result']
+    except:
+        return 1
 
 
 def getToday():
@@ -19,6 +24,8 @@ def getToday():
 
 def getSortList():
     data = getSort()
+    if data == 1:
+        return 1
     sort = {}
     for v in data:
         sort[v['TID']] = v['T_NAME']

@@ -1,17 +1,20 @@
 import sys
 import os
 import signal
+from getopt import getopt
 from .helper import TujianHelper
 from .tools import printSort, getToday, getArchive, getAll, printByPID
+from .upload import upoladPics
 from . import print2
 
-par = sys.argv[1:]
+pars = sys.argv[1:]
+try:
+    opt,par = getopt(pars,'hp:',['help','path='])
+except:
+    TujianHelper(pars)
 
 dir = './Tujian/'
-if not os.path.isdir(dir):
-    os.makedirs(dir)
 path = os.path.abspath(dir)
-
 
 def exitTujian(signum, frame):
     print2.waring('操作终止')
@@ -20,6 +23,17 @@ def exitTujian(signum, frame):
 
 signal.signal(signal.SIGINT, exitTujian)
 signal.signal(signal.SIGTERM, exitTujian)
+
+for o,a in opt:
+    if o in ('-h','--help'):
+        par2=['help',par[0]]
+        TujianHelper(par2)
+        sys.exit()
+    elif o in ('-p','--path'):
+        path = os.path.join(a,'Tujian')
+
+if not os.path.isdir(path):
+    os.makedirs(path)
 
 try:
     key = par[0]
@@ -47,6 +61,9 @@ elif key == 'all':
 
 elif key == 'info':
     printByPID(par)
+
+elif key == 'upload':
+    upoladPics(par)
 
 else:
     print2.error('找不到这个命令')

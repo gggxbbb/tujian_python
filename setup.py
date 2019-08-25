@@ -7,7 +7,7 @@ with open("README.md", "r", encoding='UTF-8') as fh:
 
 setuptools.setup(
     name="tu",
-    version="0.0.7",
+    version="0.0.8",
     author="gggxbbb",
     author_email="gamegxb@163.com",
     description="A simlpe tool for Tujian",
@@ -19,7 +19,8 @@ setuptools.setup(
     install_requires=[
         'qrcode>=6.0',
         'pillow>=6.0.0',
-        'image>=1.5.0'
+        'image>=1.5.0',
+        'PyYAML>=5.1.2'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

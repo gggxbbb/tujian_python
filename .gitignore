@@ -4,3 +4,4 @@ __pycache__
 /dist
 *.spec
 *.egg-info
+_test*

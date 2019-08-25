@@ -16,23 +16,37 @@ def getImage(pic, path, sort):
                              (date, name, title, pid, user))
     if not os.path.isfile(file_path):
         print('正在获取%s %s %s' % (name, title, link))
-        Http.downloadB(link, file_path)
+        data = Http.downloadB(link, file_path)
+        if data == 1:
+            print2.error('获取%s %s %s 失败' % (name, title, link))
+            return 1
         print2.success('%s 已保存' % file_path)
     else:
         print2.success("%s 已存在" % file_path)
+    return 0
 
 
 def printSort():
     data = Tujian.getSort()
+    if data == 1:
+        print2.error('加载失败')
+        return 1
     for v in data:
         print(v['T_NAME'] + ' -- ' + v['TID'])
+    return 0
 
 
 def getToday(path, sort=None):
     print('获取今日')
     data = Tujian.getToday()
+    if data == 1:
+        print2.error('加载失败')
+        return 1
     if sort == None:
         sort = Tujian.getSortList()
+        if sort == 1:
+            print2.error('加载失败')
+            return 1
     for v in data:
         getImage(v, path, sort)
     print2.success('获取今日 成功')
@@ -41,6 +55,9 @@ def getToday(path, sort=None):
 def getArchive(par, path, sort=None):
     if sort == None:
         sort = Tujian.getSortList()
+        if sort == 1:
+            print2.error('加载失败')
+            return 1
     try:
         TID = par[1]
         TNAME = sort[TID]
@@ -53,6 +70,9 @@ def getArchive(par, path, sort=None):
     print('获取 %s (%s)' % (TNAME, TID))
     print('获取第 1 页')
     data = Tujian.getArchive(TID, 1)
+    if data == 1:
+        print2.error('加载失败')
+        return 1
     maxpage = data['maxpage']
     for v in data['result']:
         getImage(v, path, sort)
@@ -61,17 +81,25 @@ def getArchive(par, path, sort=None):
         page = p+1
         print('获取第 %s 页,共 %s 页' % (page, maxpage))
         data = Tujian.getArchive(TID, page)
+        if data == 1:
+            print2.error('加载失败')
+            return 1
         for v in data['result']:
             getImage(v, path, sort)
         print2.success('获取第 %s 页成功' % page)
     print2.success('获取 %s (%s) 成功' % (TNAME, TID))
+    return 0
 
 
 def getAll(path):
     sort = Tujian.getSortList()
+    if sort == 1:
+        print2.error('加载失败')
+        return 1
     getToday(path, sort)
     for k in sort:
         getArchive(['', k], path, sort)
+    print2.success('获取所有 成功')
 
 
 def printQrcode(PID):
@@ -83,6 +111,9 @@ def printQrcode(PID):
 def printInfo(data, sort=None):
     if sort == None:
         sort = Tujian.getSortList()
+        if sort == 1:
+            print2.error('加载失败')
+            return 1
     print('「%s」' % data['p_title'])
     print('%s %s %s×%s @%s' % (
         data['p_date'],
@@ -100,12 +131,18 @@ def printInfo(data, sort=None):
 
 def printByPID(par):
     sort = Tujian.getSortList()
+    if sort == 1:
+        print2.error('加载失败')
+        return 1
     try:
         PID = par[1]
     except:
         print2.error('请输入 PID')
         sys.exit(1)
     data = Tujian.getPicData(PID)
+    if data == 1:
+        print2.error('加载失败')
+        return 1
     try:
         data['PID']
     except:

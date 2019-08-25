@@ -5,7 +5,7 @@ message = [
     'TujianP 第三方 Tujian 命令行工具',
     '',
     '用法:',
-    'python3 -m tu <命令> [参数1 [参数2] ... ]',
+    'python3 -m tu -h -p <path> --help --path=<path> <命令> [参数1 [参数2] ... ]',
     '',
     '命令:',
     'today               下载今日图片',
@@ -13,6 +13,7 @@ message = [
     'archive <TID>       根据 TID 获取图片, 不含当日图片',
     'all                 获取所有图片',
     'info <PID>          根据 PID 查询图片信息',
+    'upload <file>       根据配置文件批量上传'
     #'img <PID>           根据 PID 获取图片',
     #'search <KEY>        搜索图片',
     'help                查看帮助',
@@ -22,6 +23,12 @@ message = [
     'TID                 分类的 UUID , 使用 sort 获取',
     'PID                 图片的 UUID , 获取方式请随意',
     'KEY                 图片的 关键字',
+    'file                一个文件的路径',
+    '',
+    '参数:',
+    '-h --help           查看帮助',
+    '-p <path>           自定义存储路径(会自动追加 Tujian 文件夹)',
+    '-path=<path>        同上'
     '',
     '使用 help <命令> 查看详细内容'
 ]
@@ -49,6 +56,11 @@ detail = {
     'info': [
         '需要参数 PID',
         '查询指定图片的信息'
+    ],
+    'upload':[
+        '需要参数 file',
+        '批量投稿',
+        '详情请访问 https://gggxbbb.github.io/tujian_python/'
     ],
     'img': ['...'],
     'search': ['...'],
