@@ -51,7 +51,7 @@ pics:
     sort: e5771003-b4ed-11e8-a8ea-0202761b0892
     content: |-
       示例图片2
-    path: http://example.com/001.png
+    link: http://example.com/001.png
 ```
 
 ### Profile 用户数据
