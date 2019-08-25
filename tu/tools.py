@@ -49,7 +49,8 @@ def getToday(path, sort=None):
             return 1
     for v in data:
         getImage(v, path, sort)
-    print2.success('获取今日 成功')
+    print2.success('获取今日 完成')
+    return 0
 
 
 def getArchive(par, path, sort=None):
@@ -76,7 +77,7 @@ def getArchive(par, path, sort=None):
     maxpage = data['maxpage']
     for v in data['result']:
         getImage(v, path, sort)
-    print2.success('获取第 1 页 成功')
+    print2.success('获取第 1 页 完成')
     for p in range(1, int(maxpage)):
         page = p+1
         print('获取第 %s 页,共 %s 页' % (page, maxpage))
@@ -86,8 +87,8 @@ def getArchive(par, path, sort=None):
             return 1
         for v in data['result']:
             getImage(v, path, sort)
-        print2.success('获取第 %s 页成功' % page)
-    print2.success('获取 %s (%s) 成功' % (TNAME, TID))
+        print2.success('获取第 %s 页完成' % page)
+    print2.success('获取 %s (%s) 完成' % (TNAME, TID))
     return 0
 
 
@@ -99,7 +100,7 @@ def getAll(path):
     getToday(path, sort)
     for k in sort:
         getArchive(['', k], path, sort)
-    print2.success('获取所有 成功')
+    print2.success('获取所有 完成')
 
 
 def printQrcode(PID):
@@ -129,23 +130,36 @@ def printInfo(data, sort=None):
     printQrcode(data['PID'])
 
 
-def printByPID(par):
+def getInfoByPID(par):
     sort = Tujian.getSortList()
     if sort == 1:
         print2.error('加载失败')
-        return 1
+        return 1,None
     try:
         PID = par[1]
     except:
         print2.error('请输入 PID')
-        sys.exit(1)
+        return 1,None
     data = Tujian.getPicData(PID)
     if data == 1:
-        print2.error('加载失败')
-        return 1
+        print2.error('图片信息加载失败')
+        return 1,None
     try:
         data['PID']
     except:
         print2.error('没有这张图片')
+        return 1,None
+    return data,sort
+
+
+def printByPID(par):
+    data,sort = getInfoByPID(par)
+    if data == 1:
         sys.exit(1)
     printInfo(data, sort)
+
+def getByPID(par,path):
+    data,sort = getInfoByPID(par)
+    if data == 1:
+        sys.exit(1)
+    getImage(data,path,sort)

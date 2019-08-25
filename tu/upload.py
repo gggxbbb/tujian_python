@@ -24,15 +24,16 @@ def uploadPic(pic,name,mail):
             return 1
         if data2['ret'] == True:
             link = 'https://img.dpic.dev/' + data2['info']['md5']
-            print2.success('\r上传成功')
+            print2.success('\r%s 上传成功'%pic['title'])
         else:
-            print2.error(('\r%s 上传失败: '%pic['date'])+data2['info']['message'])
+            print2.error(('\r%s 上传失败: '%pic['title'])+data2['info']['message'])
             return 1
     except:
         try:
             link = pic['link']
         except:
             print2.error('请为 %s 提供图片地址或链接'%pic['title'])
+            return 1
     data['url']=link
     print2.print2.message('\n%s 提交中'%pic['title'])
     message = Http.postJSON('https://v2.api.dailypics.cn/tg',data)
@@ -57,6 +58,7 @@ def upoladPics(par):
         mail = data['mail']
     except:
         print2.error('请提供用户名及邮箱')
+        sys.exit(1)
     err = 0
     for v in data['pics']:
         err += uploadPic(v,name,mail)
