@@ -27,7 +27,7 @@ signal.signal(signal.SIGTERM, exitTujian)
 
 for o, a in opt:
     if o in ('-h', '--help'):
-        par2 = ['help', par[0]]
+        par2 = ['help'] + par
         TujianHelper(par2)
         sys.exit()
     elif o in ('-p', '--path'):

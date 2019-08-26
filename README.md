@@ -76,7 +76,7 @@ pics:
     link: http://example.com/001.png
 ```
 
-### Profile 用户数据
+### 用户数据 Profile
 
 作为投稿者,你需要提供你的部分信息:  
 
@@ -85,7 +85,7 @@ name: 你的昵称
 mail: 你的邮箱地址
 ```
 
-### Pictures 图片
+### 图片 Pictures
 
 作为投稿者,你需要提供需投稿的图片.  
 
