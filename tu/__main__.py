@@ -18,8 +18,7 @@ path = os.path.abspath(dir)
 
 
 def exitTujian(signum, frame):
-    print2.waring('操作终止')
-    os._exit(0)
+    raise KeyboardInterrupt('操作被用户终止')
 
 
 signal.signal(signal.SIGINT, exitTujian)
