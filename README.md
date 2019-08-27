@@ -11,7 +11,7 @@ A simple tool for Tujian written by Python3.
 The all pictures are saved in a folder called `Tujian` where you use the tool.  
   
 如果你无法理解，你可以使用 `python3 -m tu path` 来打印存储图片的路径。  
-If you cannot understand,you can use `python3 -m tu path` to print the path to save the all pictures.  
+If you cannot understand,you can use `python3 -m tu path` to print the path to save all the pictures.  
   
 请使用 `Python3` 运行此工具。  
 Please run the tool with `Python3` .  
