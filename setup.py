@@ -7,7 +7,7 @@ with open("README.md", "r", encoding='UTF-8') as fh:
 
 setuptools.setup(
     name="tu",
-    version="0.0.12",
+    version="0.0.13",
     author="gggxbbb",
     author_email="gamegxb@163.com",
     description="A simlpe tool for Tujian",
