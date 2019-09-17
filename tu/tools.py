@@ -10,7 +10,7 @@ def getImage(pic, path, sort):
         '/', '&').replace('\\', '&').replace(':', '')
     date = pic['p_date']
     pid = pic['PID']
-    link = pic['local_url']+'?p=0'
+    link = pic['local_url']+'?p=0&f=jpg'
     user = pic['username']
     file_path = os.path.join(path, '%s-%s_%s_%s.%s.jpeg' %
                              (date, name, title, pid, user))
