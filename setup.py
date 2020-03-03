@@ -6,7 +6,7 @@ with open("README.md", "r", encoding='UTF-8') as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="tu",
+    name="PyTujian",
     version="0.0.13",
     author="gggxbbb",
     author_email="gamegxb@163.com",

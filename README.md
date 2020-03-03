@@ -10,8 +10,8 @@ One Each Make use Python3 Make up write of Tujian of simple easy work With.
 图片保存于当前目录下的 `Tujian` 文件夹。  
 Figure sheet Guarantee Save to when before Head record under of `Tujian` Text Pieces folder.
   
-如果你无法理解，你可以使用 `python3 -m tu path` 来打印存储图片的路径。  
-Such as fruit you no law Reason solution, you can To Make use `python3 -m tu path` Come hit Seal Save Store Figure sheet of road path.  
+如果你无法理解，你可以使用 `python3 -m PyTujian path` 来打印存储图片的路径。  
+Such as fruit you no law Reason solution, you can To Make use `python3 -m PyTujian path` Come hit Seal Save Store Figure sheet of road path.  
   
 请使用 `Python3` 运行此工具。  
 please Make use `Python3` Transport Row this work With.
@@ -22,18 +22,18 @@ this work With only support ** hold simple body in Text **.
 # 如何使用 Usage 
 
 ```bash
-pip3 instal tu
-python3 -m tu
+pip3 instal PyTujian
+python3 -m PyTujian
 ```
 
 # 获取图片 Get Pictures
 
-使用 `python3 -m tu today` 来获取当日图片,  
-使用 `python3 -m tu all` 来获取所有图片,  
-使用 `python3 -m get <PID>` 来获取指定图片,  
-使用 `python3 -m tu archive <TID>` 来获得指定分类下的图片归档(不含当日图片).
+使用 `python3 -m PyTujian today` 来获取当日图片,  
+使用 `python3 -m PyTujian all` 来获取所有图片,  
+使用 `python3 -m PyTujian get <PID>` 来获取指定图片,  
+使用 `python3 -m PyTujian archive <TID>` 来获得指定分类下的图片归档(不含当日图片).
 
-`TID` 可使用 `python3 -m tu sort` 来获取,  
+`TID` 可使用 `python3 -m PyTujian sort` 来获取,  
 `PID` 为图片的 `UUID`.  
 
 保存的图片命名格式如下:
@@ -43,14 +43,14 @@ python3 -m tu
 
 # 查询信息 Inqire
 
-使用 `python3 -m tu info <PID>` 来查询单张图片的详细信息.  
+使用 `python3 -m PyTujian info <PID>` 来查询单张图片的详细信息.  
 `PID` 为图片的 `UUID`.
 
 # 投稿 Submission
 
 使用以下命令来进行投稿:  
 ```bash
-python3 -m tu upload xxx.yml
+python3 -m PyTujian upload xxx.yml
 ```
 需要提供参数: 一个 `YAML` 文件  
 
@@ -118,7 +118,7 @@ pics:
     link: 图片网络地址
 ```
 
-`TID` 可使用 `python3 -m tu sort` 来获取.  
+`TID` 可使用 `python3 -m PyTujian sort` 来获取.  
 
 `path` 和 `link` 仅需提供其中一个,  
 
