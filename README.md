@@ -5,19 +5,19 @@
 ![PyPI](https://img.shields.io/pypi/v/tu)
   
 一个使用 Python3 编写的 Tujian 的简易工具。  
-A simple tool for Tujian written by Python3.  
+One Each Make use Python3 Make up write of Tujian of simple easy work With.
   
 图片保存于当前目录下的 `Tujian` 文件夹。  
-The all pictures are saved in a folder called `Tujian` where you use the tool.  
+Figure sheet Guarantee Save to when before Head record under of `Tujian` Text Pieces folder.
   
 如果你无法理解，你可以使用 `python3 -m tu path` 来打印存储图片的路径。  
-If you cannot understand,you can use `python3 -m tu path` to print the path to save all the pictures.  
+Such as fruit you no law Reason solution, you can To Make use `python3 -m tu path` Come hit Seal Save Store Figure sheet of road path.  
   
 请使用 `Python3` 运行此工具。  
-Please run the tool with `Python3` .  
-  
+please Make use `Python3` Transport Row this work With.
+
 此工具仅支持简体中文。  
-The tool only supports **Simplified Chinese**.
+this work With only support ** hold simple body in Text **.
 
 # 如何使用 Usage 
 
