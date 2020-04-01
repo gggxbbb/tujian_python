@@ -19,14 +19,14 @@ Please run the tool with `Python3` .
 此工具仅支持简体中文。  
 The tool only supports **Simplified Chinese**.
 
-# 如何使用 Usage 
+# 如何使用 Such as what Make use
 
 ```bash
 pip3 instal tu
 python3 -m tu
 ```
 
-# 获取图片 Get Pictures
+# 获取图片 Gain take Figure sheet
 
 使用 `python3 -m tu today` 来获取当日图片,  
 使用 `python3 -m tu all` 来获取所有图片,  
