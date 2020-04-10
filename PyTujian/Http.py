@@ -17,15 +17,17 @@ def get(url):
         req = request.Request(url, headers=header)
         data = request.urlopen(req).read().decode('utf-8')
         return data
+    except KeyboardInterrupt:
+        sys.exit()
     except:
         return 1
 
 
 def getJson(url):
-    try:
-        return json.loads(get(url))
-    except:
+    re = get(url)
+    if re == 1:
         return 1
+    return json.loads(re)
 
 def downloadB(url, path):
     try:
@@ -35,6 +37,8 @@ def downloadB(url, path):
             f.write(data)
             f.close()
         return 0
+    except KeyboardInterrupt:
+        sys.exit()
     except:
         return 1
 
@@ -49,15 +53,17 @@ def uploadB(url, path):
         req = request.Request(url, data, headers=header2)
         data2 = request.urlopen(req).read().decode('utf-8')
         return data2
+    except KeyboardInterrupt:
+        sys.exit()
     except:
         return 1
 
 
 def uploadBJSON(url, path):
-    try:
-        return json.loads(uploadB(url, path))
-    except:
-        return 1
+    re = uploadB(url,path)
+    if re == 1:
+        return re
+    return json.loads(re)
 
 def post(url, data):
     try:
@@ -65,12 +71,14 @@ def post(url, data):
         req = request.Request(url, data3, headers=header)
         data2 = request.urlopen(req).read().decode('utf-8')
         return data2
+    except KeyboardInterrupt:
+        sys.exit()
     except:
         return 1
 
 
 def postJSON(url, data):
-    try:
-        return json.loads(post(url, data))
-    except:
+    re = post(url, data)
+    if re == 1:
         return 1
+    return json.loads(post(url, data))
