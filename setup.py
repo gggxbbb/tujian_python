@@ -17,9 +17,9 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires='>=3',
     install_requires=[
-        'qrcode>=6.0',
-        'pillow>=6.0.0',
-        'image>=1.5.0',
+        #'qrcode>=6.0',
+        #'pillow>=6.0.0',
+        #'image>=1.5.0',
         'PyYAML>=5.1.2'
     ],
     classifiers=[

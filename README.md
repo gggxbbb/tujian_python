@@ -1,8 +1,8 @@
 # Tu
 
 [![Build Status](https://travis-ci.org/gggxbbb/tujian_python.svg?branch=master)](https://travis-ci.org/gggxbbb/tujian_python)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tu)
-![PyPI](https://img.shields.io/pypi/v/tu)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/PyTujian)
+![PyPI](https://img.shields.io/pypi/v/PyTujian)
   
 一个使用 Python3 编写的 Tujian 的简易工具。  
 One Each Make use Python3 Make up write of Tujian of simple easy work With.

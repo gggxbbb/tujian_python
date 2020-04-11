@@ -12,6 +12,15 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
 
 
+def progress(done,size,total):
+    pre =100.0 * done * size / total
+    down = done * size
+    print2.print2.message('%0.2f%% @ %0.2fKB/%0.2fKB\r'%(pre,down/1024,total/1024))
+    if pre > 100:
+        print2.print2.message('\r')
+
+
+
 def get(url):
     try:
         req = request.Request(url, headers=header)
@@ -31,11 +40,7 @@ def getJson(url):
 
 def downloadB(url, path):
     try:
-        req = request.Request(url, headers=header)
-        data = request.urlopen(req).read()
-        with open(path, 'wb') as f:
-            f.write(data)
-            f.close()
+        request.urlretrieve(url, path, progress)
         return 0
     except KeyboardInterrupt:
         sys.exit()

@@ -3,7 +3,7 @@ python:
   - '3.7'
 script:
   - 'python3 setup.py install'
-  - 'python3 -m tu'
+  - 'python3 -m PyTujian'
 deploy:
   provider: pypi
   user: "gggxbbb"

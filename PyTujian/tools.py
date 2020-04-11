@@ -1,5 +1,5 @@
 from . import Tujian, Http, print2
-import qrcode
+#import qrcode
 import os
 import sys
 
@@ -10,7 +10,7 @@ def getImage(pic, path, sort):
         '/', '&').replace('\\', '&').replace(':', '')
     date = pic['p_date']
     pid = pic['PID']
-    link = pic['local_url']+'?p=0&f=jpg'
+    link = 'https://s2.images.dailypics.cn'+pic['nativePath']
     user = pic['username']
     file_path = os.path.join(path, '%s-%s_%s_%s.%s.jpeg' %
                              (date, name, title, pid, user))
@@ -103,10 +103,10 @@ def getAll(path):
     print2.success('获取所有 完成')
 
 
-def printQrcode(PID):
-    qr = qrcode.QRCode()
-    qr.add_data(Tujian.getWebLink(PID))
-    qr.print_ascii(invert=True)
+#def printQrcode(PID):
+#    qr = qrcode.QRCode()
+#    qr.add_data(Tujian.getWebLink(PID))
+#    qr.print_ascii(invert=True)
 
 
 def printInfo(data, sort=None):
@@ -126,8 +126,8 @@ def printInfo(data, sort=None):
     print('')
     print(data['p_content'])
     print('')
-    print('访问 %s 或扫描二维码查看详情' % Tujian.getWebLink(data['PID']))
-    printQrcode(data['PID'])
+    print('访问 %s 查看详情' % Tujian.getWebLink(data['PID']))
+    #printQrcode(data['PID'])
 
 
 def getInfoByPID(par):
