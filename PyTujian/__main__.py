@@ -5,6 +5,7 @@ from getopt import getopt
 from .helper import TujianHelper
 from .tools import printSort, getToday, getArchive, getAll, printByPID, getByPID
 from .upload import upoladPics
+from .check import check
 from . import print2
 
 pars = sys.argv[1:]
@@ -67,6 +68,9 @@ elif key == 'upload':
 
 elif key == 'get':
     getByPID(par,path)
+
+elif key == 'check':
+    check(par)
 
 else:
     print2.error('找不到这个命令')
