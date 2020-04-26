@@ -2,6 +2,7 @@ from urllib import request
 from urllib.request import urlretrieve
 from urllib import error
 from urllib import parse
+import time
 import imghdr
 import mimetypes
 from . import print2
@@ -12,13 +13,29 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
 
 
-flags = ['|','/','-','\\']
+start = time.time()
 
+def format_byte(b):
+    if b > 1000:
+        _b = b / 1024
+        if _b > 1000:
+            _b = _b / 1024
+            return '%0.2fMB'%_b
+        return '%0.2fKB'%_b
+    return '%sB'%b
 
 def progress(done,size,total):
-    pre =100.0 * done * size / total
+    pre = 100.0 * done * size / total
     down = done * size
-    print2.print2.message('>%s %0.2f%% [%s%s]  @ %0.2fKB/%0.2fKB\r'%(flags[int(pre)%4],pre,'#'*int(pre/10),'.'*int(10-pre/10),down/1024,total/1024))
+    speed = down / (time.time() - start)
+    print2.print2.message('[%s%s] %s/s %s/%s \r'%(
+        '#'*int(pre/10),
+        '.'*int(10-pre/10),
+        format_byte(speed),
+        format_byte(down),
+        format_byte(total)
+        )
+    )
     if pre > 100:
         print2.print2.message('\r')
 
@@ -42,6 +59,7 @@ def getJson(url):
     return json.loads(re)
 
 def downloadB(url, path):
+    start = time.time()
     try:
         request.urlretrieve(url, path, progress)
         return 0
