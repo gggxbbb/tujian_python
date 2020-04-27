@@ -72,13 +72,13 @@ def getJson(url):
     return json.loads(re)
 
 def downloadB(url, path):
-    #try:
-    request.urlretrieve(url, path, progress)
-    #    return 0
-    #except KeyboardInterrupt:
-    #    sys.exit()
-    #except:
-    #    return 1
+    try:
+        request.urlretrieve(url, path, progress)
+        return 0
+    except KeyboardInterrupt:
+        sys.exit()
+    except:
+        return 1
 
 
 def uploadB(url, path):
