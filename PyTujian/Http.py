@@ -28,14 +28,19 @@ def progress(done,size,total):
     pre = 100.0 * done * size / total
     down = done * size
     speed = down / (time.time() - start)
-    print2.print2.message('[%s%s] %s/s %s/%s \r'%(
-        '#'*int(pre/10),
-        '.'*int(10-pre/10),
-        format_byte(speed),
-        format_byte(down),
-        format_byte(total)
+    if total < 0:
+        print2.print2.message('->%s'
+                %format_byte(down))
+    else:
+        print2.print2.message('[%s%s] %s/s %s/%s \r'
+            %(
+            '#'*int(pre/10),
+            '.'*int(10-pre/10),
+            format_byte(speed),
+            format_byte(down),
+            format_byte(total)
+            )
         )
-    )
     if pre > 100:
         print2.print2.message('\r')
 
