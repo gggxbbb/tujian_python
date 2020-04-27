@@ -14,6 +14,8 @@ header = {
 
 
 start = time.time()
+downloaded = 0
+speed = 0
 
 def format_byte(b):
     if b > 1000:
@@ -25,11 +27,17 @@ def format_byte(b):
     return '%sB'%b
 
 def progress(done,size,total):
+    global downloaded,start,speed
     pre = 100.0 * done * size / total
     down = done * size
-    speed = down / (time.time() - start)
+    #print(down-downloaded,time.time()-start,'\r')
+    now = time.time()
+    if now - start > 0.1 or pre < 2:
+        speed = (down - downloaded) / (now - start)
+        start = time.time()
+        downloaded = down
     if total < 0:
-        print2.print2.message('->%s'
+        print2.print2.message('->%s \r'
                 %format_byte(down))
     else:
         print2.print2.message('[%s%s] %s/s %s/%s \r'
@@ -64,14 +72,13 @@ def getJson(url):
     return json.loads(re)
 
 def downloadB(url, path):
-    start = time.time()
-    try:
-        request.urlretrieve(url, path, progress)
-        return 0
-    except KeyboardInterrupt:
-        sys.exit()
-    except:
-        return 1
+    #try:
+    request.urlretrieve(url, path, progress)
+    #    return 0
+    #except KeyboardInterrupt:
+    #    sys.exit()
+    #except:
+    #    return 1
 
 
 def uploadB(url, path):
