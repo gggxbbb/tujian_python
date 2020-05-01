@@ -32,15 +32,17 @@ def progress(done,size,total):
     down = done * size
     #print(down-downloaded,time.time()-start,'\r')
     now = time.time()
-    if now - start > 0.1 or pre < 2:
+    if now - start > 1:
         speed = (down - downloaded) / (now - start)
-        start = time.time()
+        start = now
         downloaded = down
+    if speed < 0:
+        return
     if total < 0:
         print2.print2.message('->%s \r'
                 %format_byte(down))
     else:
-        print2.print2.message('[%s%s] %s/s %s/%s \r'
+        print2.print2.message('[%s%s] %s/s %s/%s\r'
             %(
             '#'*int(pre/10),
             '.'*int(10-pre/10),
@@ -74,6 +76,7 @@ def getJson(url):
 def downloadB(url, path):
     try:
         request.urlretrieve(url, path, progress)
+        start = time.time()
         return 0
     except KeyboardInterrupt:
         sys.exit()
