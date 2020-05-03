@@ -15,7 +15,7 @@ message = [
     'info <PID>          根据 PID 查询图片信息',
     'upload <file>       根据配置文件批量上传',
     'get <PID>           根据 PID 获取图片',
-    'check <file>        图片查重',
+    #'check <file>        图片查重',
     #'search <KEY>        搜索图片',
     'help                查看帮助',
     'path                获取图片保存目录',
