@@ -5,7 +5,7 @@ message = [
     'TujianP 第三方 Tujian 命令行工具',
     '',
     '用法:',
-    'python3 -m PyTujian -h -p <path> --help --path=<path> <命令> [参数1 [参数2] ... ]',
+    'PyTujian -h -p <path> --help --path=<path> <命令> [参数1 [参数2] ... ]',
     '',
     '命令:',
     'today               下载今日图片',
