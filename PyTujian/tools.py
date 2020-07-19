@@ -14,7 +14,7 @@ def getImage(pic, path, sort):
     link = 'https://s2.images.dailypics.cn'+pic['nativePath']
     searchObj = re.search(r'\.[a-z]*$', link)
     user = pic['username']
-    file_path = os.path.join(path, '%s-%s_%s_%s.%s.%s' %
+    file_path = os.path.join(path, '%s-%s_%s_%s.%s%s' %
                              (date, name, title, pid, user, searchObj.group()))
     if not os.path.isfile(file_path):
         print('正在获取%s %s %s' % (name, title, link))
