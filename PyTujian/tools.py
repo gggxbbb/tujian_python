@@ -2,6 +2,7 @@ from . import Tujian, Http, print2
 #import qrcode
 import os
 import sys
+import re
 
 
 def getImage(pic, path, sort):
@@ -11,9 +12,10 @@ def getImage(pic, path, sort):
     date = pic['p_date']
     pid = pic['PID']
     link = 'https://s2.images.dailypics.cn'+pic['nativePath']
+    searchObj = re.search(r'\.[a-z]*$', link)
     user = pic['username']
-    file_path = os.path.join(path, '%s-%s_%s_%s.%s.jpeg' %
-                             (date, name, title, pid, user))
+    file_path = os.path.join(path, '%s-%s_%s_%s.%s.%s' %
+                             (date, name, title, pid, user, searchObj.group()))
     if not os.path.isfile(file_path):
         print('正在获取%s %s %s' % (name, title, link))
         data = Http.downloadB(link, file_path)
