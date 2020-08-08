@@ -6,7 +6,7 @@ import re
 
 
 def getImage(pic, path, sort):
-    name = sort[pic['TID']]
+    name = sort.get(data['TID'], 'Unknown')
     title = pic['p_title'].replace(
         '/', '&').replace('\\', '&').replace(':', '')
     date = pic['p_date']
@@ -63,7 +63,7 @@ def getArchive(par, path, sort=None):
             return 1
     try:
         TID = par[1]
-        TNAME = sort[TID]
+        TNAME = sort.get(data['TID'], 'Unknown')
     except IndexError:
         print2.error('请输入 TID')
         sys.exit(1)
