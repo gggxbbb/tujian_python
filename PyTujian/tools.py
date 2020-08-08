@@ -120,7 +120,7 @@ def printInfo(data, sort=None):
     print('「%s」' % data['p_title'])
     print('%s %s %s×%s @%s' % (
         data['p_date'],
-        sort[data['TID']],
+        sort.get(data['TID'], 'Unknown'),
         data['width'],
         data['height'],
         data['username']
