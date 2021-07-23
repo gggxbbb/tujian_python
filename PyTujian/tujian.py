@@ -22,9 +22,9 @@ class TujianSortCollection():
     """
     One class to collect TujianSort
     """
-    sorts: dict[UUID:TujianSort] = {}
+    sorts: dict[UUID, TujianSort] = {}
 
-    def __init__(self, raw: list[dict]) -> None:
+    def __init__(self, raw: list[dict[str, any]]) -> None:
         for sort in raw:
             id = UUID(sort['TID'])
             self.sorts[id] = TujianSort(id, sort['T_NAME'])
@@ -50,7 +50,7 @@ class TujianUserCollection():
     """
     One class to collect users
     """
-    users: dict[str:TujianUser] = {}
+    users: dict[str, TujianUser] = {}
 
     def __init__(self) -> None:
         pass
@@ -118,3 +118,23 @@ class TujianPic():
             text=TujianColor(raw['text_color'])
         )
         self.user = users.get(raw['username'])
+
+
+class TujianPicCollection():
+    """
+    One class to collect TujianPic
+    """
+    pics: dict[UUID, TujianPic] = {}
+
+    def __init__(self) -> None:
+        pass
+
+    def get(self, id: UUID) -> TujianPic:
+        if id in self.pics.keys():
+            return self.pics[id]
+        else:
+            return None
+
+    def put(self, pic: TujianPic) -> None:
+        if not pic.id in self.pics.keys():
+            self.pics[pic.id] = pic
