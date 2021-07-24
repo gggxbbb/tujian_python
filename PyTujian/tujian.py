@@ -2,9 +2,35 @@ from typing import NewType
 from datetime import date
 import json
 
+from requests.sessions import session
+
 UUID = NewType('UUID', str)
 TujianColor = NewType('TujianColor', str)
 MarkdownRaw = NewType('MarkdownRaw', str)
+
+
+class TujianJSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, TujianSort):
+            return dict(o)
+        elif isinstance(o, TujianUser):
+            return dict(o)
+        elif isinstance(o, TujianPic):
+            return dict(o)
+        elif isinstance(o, TujianPicSize):
+            return dict(o)
+        elif isinstance(o, TujianPicColor):
+            return dict(o)
+        elif isinstance(o, TujianSortCollection):
+            return o.sorts
+        elif isinstance(o, TujianUserCollection):
+            return o.users
+        elif isinstance(o, TujianPicCollection):
+            return o.pics
+        elif isinstance(o, date):
+            return o.isoformat()
+        else:
+            return super().default(o)
 
 
 class TujianSort():
@@ -40,7 +66,7 @@ class TujianSort():
         """
         转str，生成json
         """
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
     def __eq__(self, o: object) -> bool:
         """
@@ -93,7 +119,7 @@ class TujianSortCollection():
 
     def __next__(self):
         if self.index < len(self):
-            r = self.sorts.values()[self.index]
+            r = list(self.sorts.values())[self.index]
             self.index += 1
             return r
         else:
@@ -104,7 +130,7 @@ class TujianSortCollection():
         """
         转str，生成json
         """
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
 
 class TujianUser():
@@ -136,7 +162,7 @@ class TujianUser():
         """
         转str，生成json
         """
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
     def __eq__(self, o: object) -> bool:
         """
@@ -189,7 +215,7 @@ class TujianUserCollection():
 
     def __next__(self):
         if self.index < len(self):
-            r = self.users.values()[self.index]
+            r = list(self.users.values())[self.index]
             self.index += 1
             return r
         else:
@@ -200,7 +226,7 @@ class TujianUserCollection():
         """
         转str，生成json
         """
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
 
 class TujianPicSize():
@@ -236,7 +262,7 @@ class TujianPicSize():
         """
         转str，生成json
         """
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
 
 class TujianPicColor():
@@ -272,7 +298,7 @@ class TujianPicColor():
         """
         转str，生成json
         """
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
 
 class TujianPic():
@@ -288,6 +314,8 @@ class TujianPic():
     date: date
     color: TujianPicColor
     user: TujianUser
+    file_size: float
+    file_type: str
 
     def __init__(self, raw: dict, sorts: TujianSortCollection, users: TujianUserCollection) -> None:
         self.id = raw['PID']
@@ -341,6 +369,12 @@ class TujianPic():
         elif self.index == 8:
             self.index += 1
             return ('user', self.url)
+        elif self.index == 9:
+            self.index += 1
+            return ('file_size', self.file_size)
+        elif self.index == 10:
+            self.index += 1
+            return ('file_type', self.file_type)
         else:
             raise StopIteration
     # ==========
@@ -349,7 +383,7 @@ class TujianPic():
         """
         转str，生成json
         """
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
     def __eq__(self, o: object) -> bool:
         """
@@ -369,6 +403,28 @@ class TujianPicCollection():
 
     def __init__(self) -> None:
         pass
+
+    # ==========
+    # 实现迭代
+    index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index < len(self):
+            r = list(self.pics.values())[self.index]
+            self.index += 1
+            return r
+        else:
+            raise StopIteration
+    # ==========
+
+    def __str__(self) -> str:
+        """
+        转str，生成json
+        """
+        return json.dumps(self, ensure_ascii=False, cls=TujianJSONEncoder)
 
     def get(self, id: UUID) -> TujianPic:
         """
