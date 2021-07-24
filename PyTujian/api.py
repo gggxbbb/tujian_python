@@ -123,6 +123,8 @@ class TujianV2Api(BasicApi):
         with tqdm(total=raw.file_size, leave=False, desc=raw.title, unit='B', unit_scale=True, unit_divisor=1024) as p:
             pic_res = self._session.get(raw.url, stream=True)
             if path_to_dir is not None:
+                if not os.path.isdir(path_to_dir):
+                    os.makedirs(path_to_dir)
                 pic_path = os.path.join(
                     path_to_dir, self.format_file_name(raw))
             else:
