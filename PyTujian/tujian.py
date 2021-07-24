@@ -314,10 +314,10 @@ class TujianPic():
     date: datetime.date
     color: TujianPicColor
     user: TujianUser
-    file_size: float
+    file_size: int
     file_type: str
 
-    def __init__(self, raw: dict, sorts: TujianSortCollection, users: TujianUserCollection, file_size: float = None, file_type: str = None) -> None:
+    def __init__(self, raw: dict, sorts: TujianSortCollection, users: TujianUserCollection, file_size: int = None, file_type: str = None) -> None:
         self.id = raw['PID']
         self.title = raw['p_title']
         self.sort = sorts.get(UUID(raw['TID']))
@@ -336,7 +336,7 @@ class TujianPic():
         self.file_size = file_size
         self.file_type = file_type
     
-    def init(self, file_size: float, file_type: str):
+    def init(self, file_size: int, file_type: str):
         self.file_size = file_size
         self.file_type = file_type
 
