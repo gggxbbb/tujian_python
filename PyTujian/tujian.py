@@ -368,7 +368,7 @@ class TujianPic():
             return ('color', self.color)
         elif self.index == 8:
             self.index += 1
-            return ('user', self.url)
+            return ('user', self.user)
         elif self.index == 9:
             self.index += 1
             return ('file_size', self.file_size)
