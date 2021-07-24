@@ -80,12 +80,12 @@ class TujianV2Api(BasicApi):
         pic_req = self._session.head(url)
         return pic_req.headers
 
-    def build_tujian_pic_colletcion(self, raw: list) -> TujianPicCollection:
+    def build_tujian_pic_colletcion(self, raw: list, desc='加载图片列表') -> TujianPicCollection:
         """
         根据 API 返回的原始数据生成 TujianPicCollection
         """
         _tpc = TujianPicCollection()
-        with tqdm(total=len(raw), leave=False, desc='加载图片列表', unit='pic') as p:
+        with tqdm(total=len(raw), leave=False, desc=desc, unit='pic') as p:
             for i in raw:
                 _pic = TujianPic(raw=i, sorts=self.sorts, users=self.users)
                 _header = self.__get_pic_headers(_pic.url)
@@ -114,7 +114,43 @@ class TujianV2Api(BasicApi):
         api_url = self._api_root + 'today'
         api_req = self._session.get(api_url)
         api_result = api_req.json()
-        return self.build_tujian_pic_colletcion(api_result)
+        return self.build_tujian_pic_colletcion(api_result, desc='加载今日图片')
+
+    def get_archive(self, sort: TujianSort) -> TujianPicCollection:
+        """
+        加载图片集
+        """
+        tpc = TujianPicCollection()
+        with tqdm(total=99, leave=False, desc='加载图片列表', unit='p', unit_scale=True) as p:
+            first_page = self._session.get('https://v2.api.dailypics.cn/list', params={
+                'page': 1,
+                'size': 20,
+                'sort': sort.id
+            }).json()
+            p.total = first_page['maxpage']
+            tpc += self.build_tujian_pic_colletcion(first_page['result'], desc='加载当前分页')
+            p.update()
+            for page in range(2, first_page['maxpage']+1):
+                res = self._session.get('https://v2.api.dailypics.cn/list', params={
+                    'page': page,
+                    'size': 20,
+                    'sort': sort.id
+                }).json()
+                tpc += self.build_tujian_pic_colletcion(res['result'])
+                p.update()
+        return tpc
+
+    def get_all(self) -> TujianPicCollection:
+        """
+        加载所有图片
+        """
+        with tqdm(total=len(self.sorts)+1, leave=False, desc='加载所有图片') as p:
+            tpc = self.get_today()
+            p.update()
+            for sort in self.sorts:
+                tpc += self.get_archive(sort)
+                p.update()
+        return tpc
 
     def download_pic(self, raw: TujianPic, path_to_dir: str = None, ignore_exist: bool = True):
         """
@@ -141,7 +177,7 @@ class TujianV2Api(BasicApi):
         """
         下载图片集
         """
-        with tqdm(total=len(raw), leave=False, desc='下载中',unit='pic' ,unit_scale=True) as p:
+        with tqdm(total=len(raw), leave=False, desc='下载中', unit='pic', unit_scale=True) as p:
             for pic in raw:
                 self.download_pic(pic, path_to_dir, ignore_exist)
                 p.update(1)

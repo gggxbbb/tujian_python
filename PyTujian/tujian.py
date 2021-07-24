@@ -447,6 +447,12 @@ class TujianPicCollection():
         """
         if not pic.id in self.pics.keys():
             self.pics[pic.id] = pic
+    
+    def total_size(self) -> int:
+        t = 0
+        for i in self.pics.values():
+            t += i.file_size
+        return t
 
     def __getitem__(self, key: UUID):
         """
@@ -466,3 +472,11 @@ class TujianPicCollection():
         使用len()获取数量
         """
         return len(self.pics)
+    
+    def __add__(self, o):
+        if isinstance(o, TujianPicCollection):
+            for pic in o:
+                self.put(pic)
+            return self
+        else:
+            raise ValueError(f'Can not add {type(o)} to TujianPicCollection')
