@@ -23,7 +23,7 @@ class BasicApi():
 
 class TujianV2Api(BasicApi):
     """
-    TujianV2 API 适配器
+    TujianV2 API 适配器, 内置进度条
     """
 
     _api_root = "https://v2.api.dailypics.cn/"
