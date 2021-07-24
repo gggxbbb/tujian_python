@@ -1,5 +1,5 @@
 from typing import NewType
-from datetime import date
+import datetime
 import json
 
 from requests.sessions import session
@@ -27,7 +27,7 @@ class TujianJSONEncoder(json.JSONEncoder):
             return o.users
         elif isinstance(o, TujianPicCollection):
             return o.pics
-        elif isinstance(o, date):
+        elif isinstance(o, datetime.date):
             return o.isoformat()
         else:
             return super().default(o)
@@ -46,17 +46,17 @@ class TujianSort():
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index == 0:
-            self.index += 1
+        if self._index == 0:
+            self._index += 1
             return ('id', self.id)
-        elif self.index == 1:
-            self.index += 1
+        elif self._index == 1:
+            self._index += 1
             return ('name', self.name)
         else:
             raise StopIteration
@@ -112,15 +112,15 @@ class TujianSortCollection():
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index < len(self):
-            r = list(self.sorts.values())[self.index]
-            self.index += 1
+        if self._index < len(self):
+            r = list(self.sorts.values())[self._index]
+            self._index += 1
             return r
         else:
             raise StopIteration
@@ -145,14 +145,14 @@ class TujianUser():
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index == 0:
-            self.index += 1
+        if self._index == 0:
+            self._index += 1
             return ('name', self.name)
         else:
             raise StopIteration
@@ -208,15 +208,15 @@ class TujianUserCollection():
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index < len(self):
-            r = list(self.users.values())[self.index]
-            self.index += 1
+        if self._index < len(self):
+            r = list(self.users.values())[self._index]
+            self._index += 1
             return r
         else:
             raise StopIteration
@@ -242,17 +242,17 @@ class TujianPicSize():
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index == 0:
-            self.index += 1
+        if self._index == 0:
+            self._index += 1
             return ('width', self.width)
-        elif self.index == 1:
-            self.index += 1
+        elif self._index == 1:
+            self._index += 1
             return ('height', self.height)
         else:
             raise StopIteration
@@ -278,17 +278,17 @@ class TujianPicColor():
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index == 0:
-            self.index += 1
+        if self._index == 0:
+            self._index += 1
             return ('theme', self.theme)
-        elif self.index == 1:
-            self.index += 1
+        elif self._index == 1:
+            self._index += 1
             return ('text', self.text)
         else:
             raise StopIteration
@@ -311,13 +311,13 @@ class TujianPic():
     content: MarkdownRaw
     url: str
     size: TujianPicSize
-    date: date
+    date: datetime.date
     color: TujianPicColor
     user: TujianUser
     file_size: float
     file_type: str
 
-    def __init__(self, raw: dict, sorts: TujianSortCollection, users: TujianUserCollection) -> None:
+    def __init__(self, raw: dict, sorts: TujianSortCollection, users: TujianUserCollection, file_size: float = None, file_type: str = None) -> None:
         self.id = raw['PID']
         self.title = raw['p_title']
         self.sort = sorts.get(UUID(raw['TID']))
@@ -327,53 +327,59 @@ class TujianPic():
             width=raw['width'],
             height=raw['height']
         )
-        self.date = date.fromisoformat(raw['p_date'])
+        self.date = datetime.date.fromisoformat(raw['p_date'])
         self.color = TujianPicColor(
             theme=TujianColor(raw['theme_color']),
             text=TujianColor(raw['text_color'])
         )
         self.user = users.get(raw['username'])
+        self.file_size = file_size
+        self.file_type = file_type
+    
+    def init(self, file_size: float, file_type: str):
+        self.file_size = file_size
+        self.file_type = file_type
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index == 0:
-            self.index += 1
+        if self._index == 0:
+            self._index += 1
             return ('id', self.id)
-        elif self.index == 1:
-            self.index += 1
+        elif self._index == 1:
+            self._index += 1
             return ('title', self.title)
-        elif self.index == 2:
-            self.index += 1
+        elif self._index == 2:
+            self._index += 1
             return ('sort', self.sort)
-        elif self.index == 3:
-            self.index += 1
+        elif self._index == 3:
+            self._index += 1
             return ('content', self.content)
-        elif self.index == 4:
-            self.index += 1
+        elif self._index == 4:
+            self._index += 1
             return ('url', self.url)
-        elif self.index == 5:
-            self.index += 1
+        elif self._index == 5:
+            self._index += 1
             return ('size', self.size)
-        elif self.index == 6:
-            self.index += 1
+        elif self._index == 6:
+            self._index += 1
             return ('date', self.date)
-        elif self.index == 7:
-            self.index += 1
+        elif self._index == 7:
+            self._index += 1
             return ('color', self.color)
-        elif self.index == 8:
-            self.index += 1
+        elif self._index == 8:
+            self._index += 1
             return ('user', self.user)
-        elif self.index == 9:
-            self.index += 1
+        elif self._index == 9:
+            self._index += 1
             return ('file_size', self.file_size)
-        elif self.index == 10:
-            self.index += 1
+        elif self._index == 10:
+            self._index += 1
             return ('file_type', self.file_type)
         else:
             raise StopIteration
@@ -406,15 +412,15 @@ class TujianPicCollection():
 
     # ==========
     # 实现迭代
-    index = 0
+    _index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.index < len(self):
-            r = list(self.pics.values())[self.index]
-            self.index += 1
+        if self._index < len(self):
+            r = list(self.pics.values())[self._index]
+            self._index += 1
             return r
         else:
             raise StopIteration

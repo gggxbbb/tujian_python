@@ -37,7 +37,7 @@ class TujianV2Api(BasicApi):
         """
         super().__init__()
         self._session.headers.update(
-            {'User-Agent': f"PyTujian/{datetime.now(pytz.timezone('PRC')).strftime('%Y%m%d%H')}"})
+            {'User-Agent': f"PyTujian/{datetime.datetime.now(pytz.timezone('PRC')).strftime('%Y%m%d%H')}"})
         if auto_init:
             self.init()
 
@@ -66,11 +66,18 @@ class TujianV2Api(BasicApi):
             for i in raw:
                 _pic = TujianPic(raw=i, sorts=self.sorts, users=self.users)
                 _header = self.__get_pic_headers(_pic.url)
-                _pic.file_size = float(_header['content-length'])
-                _pic.file_type = str(_header['content-type'])
+                _pic.init(
+                    file_size=float(_header['content-length']),
+                    file_type=str(_header['content-type'])
+                )
                 _tpc.put(_pic)
                 p.update()
         return _tpc
+
+    def format_file_name(self, raw: TujianPic):
+        file_type = raw.file_type.split('/')[-1]
+        file_name = f"{raw.date.isoformat()}-{raw.sort.name}_{raw.title}_{raw.id}.{raw.user.name}.{file_type}"
+        return file_name
 
     def get_today(self) -> TujianPicCollection:
         """
