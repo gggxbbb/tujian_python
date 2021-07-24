@@ -8,3 +8,4 @@ _test*
 *.swp
 venv
 debug*
+debug/
