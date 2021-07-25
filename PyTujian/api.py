@@ -138,7 +138,7 @@ class TujianV2Api(BasicApi):
         加载图片归档
         """
         tpc = TujianPicCollection()
-        with tqdm(leave=True, desc=f'加载{sort.name}列表', unit='page', unit_scale=False) as p:
+        with tqdm(leave=False, desc=f'加载{sort.name}列表', unit='page', unit_scale=False) as p:
             first_page = self._session.get('https://v2.api.dailypics.cn/list', params={
                 'page': 1,
                 'size': 20,
@@ -191,7 +191,7 @@ class TujianV2Api(BasicApi):
         """
         下载图片
         """
-        with tqdm(total=raw.file_size, leave=True, desc=raw.title, unit='B', unit_scale=True, unit_divisor=1024) as p:
+        with tqdm(total=raw.file_size, leave=False, desc=raw.title, unit='B', unit_scale=True, unit_divisor=1024) as p:
             pic_path = self.__build_file_path(raw, path_to_dir)
             if ignore_exist:
                 if self.__if_exist(raw, pic_path):
