@@ -7,7 +7,7 @@ with open("README.md", "r", encoding='UTF-8') as fh:
 
 setuptools.setup(
     name="PyTujian",
-    version="0.1.01",
+    version="0.1.2",
     author="gggxbbb",
     author_email="gamegxb@163.com",
     description="A simlpe tool for Tujian",
@@ -17,7 +17,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires='>=3',
     install_requires=[
-        'tytz>=2021.1',
+        'pytz>=2021.1',
         'tqdm>=4.61.2',
         'requests>=2.26.0'
     ],
