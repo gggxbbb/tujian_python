@@ -1,5 +1,9 @@
 # PyTujian
 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/PyTujian)
+![PyPI](https://img.shields.io/pypi/v/PyTujian)
+[![Upload Python Package](https://github.com/gggxbbb/tujian_python/actions/workflows/python-publish.yml/badge.svg)](https://github.com/gggxbbb/tujian_python/actions/workflows/python-publish.yml)
+
 一个 Tujian 的简易命令行工具
 
 目前支持:
