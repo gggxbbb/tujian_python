@@ -11,10 +11,13 @@ from .utils import format_size
 def ensure_to_download(api: TujianV2Api, pics: TujianPicCollection, env: "CmdEnv") -> Union[bool, TujianPicCollection]:
     e_pics = api.count_exist(pics, env.path_to_dir)
     if env.ignore_exist:
-        print(f"即将下载 {len(pics)} 张图片, 其中 {len(e_pics)} 张已下载, {len(pics) - len(e_pics)} 张新下载.")
+        print(
+            f"即将下载 {len(pics)} 张图片, 其中 {len(e_pics)} 张已下载, {len(pics) - len(e_pics)} 张新下载.")
     else:
-        print(f"即将下载 {len(pics)} 张图片, 其中 {len(e_pics)} 张重新下载, {len(pics) - len(e_pics)} 张新下载.")
-    print(f"这将额外占用 {format_size(pics.total_size() - e_pics.total_size())} 的磁盘空间.")
+        print(
+            f"即将下载 {len(pics)} 张图片, 其中 {len(e_pics)} 张重新下载, {len(pics) - len(e_pics)} 张新下载.")
+    print(
+        f"这将额外占用 {format_size(pics.total_size() - e_pics.total_size())} 的磁盘空间.")
     if env.ensure_before_download == False:
         return (True, e_pics)
     else:
@@ -82,6 +85,28 @@ class CmdEnv():
         'today': cmd_download_today
     }
 
+    cmd_intr = [
+        "PyTujian",
+        "一个简易的 Tujian 命令行工具",
+        "图片默认保存在当前目录下的 Tujian 文件夹",
+        "",
+        "all            获取所有图片",
+        "archive <id>   获取指定分类的图片",
+        "sort           打印分类列表",
+        "today          获取今天图片",
+        "",
+        "-p <path>      指定图片存储目录",
+        "--path=        指定图片存储目录",
+        "-y             跳过下载确认",
+        "-f             覆盖本地已存在图片",
+        "",
+        "访问 https://docs.evax.top/project/1/doc/3/read 查看详细文档"
+    ]
+
+    def show_help(self):
+        for msg in self.cmd_intr:
+            print(msg)
+
     def __init__(self) -> None:
         self.api = TujianV2Api()
         opts, args = gnu_getopt(sys.argv[1:],
@@ -100,8 +125,12 @@ class CmdEnv():
 
     def run_cmd(self):
         if len(self.args) == 0:
-            sys.exit(1)
+            self.show_help()
+            sys.exit(0)
         target = self.args[0]
+        if target == 'help':
+            self.show_help()
+            sys.exit(0)
         if not target in self.cmd_list.keys():
             print(f'不支持的命令: {target}')
             sys.exit(1)
