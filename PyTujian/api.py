@@ -1,9 +1,10 @@
-from requests import Session
+import os
 from datetime import datetime
+
 import pytz
+from requests import Session
 from requests.models import CaseInsensitiveDict
 from tqdm import tqdm
-import os
 
 from .tujian import *
 
@@ -37,8 +38,10 @@ class TujianV2Api(BasicApi):
         '?': '-',
         '<': '-',
         '>': '-',
-        '|': '-'
+        '|': '-',
+        '"':'-'
     }
+    headers_cache_path = os.path.join(os.path.expanduser('~'),'.pytujian/headers/')
 
     def __init__(self, auto_init=True) -> None:
         """
@@ -47,6 +50,8 @@ class TujianV2Api(BasicApi):
         若设置 `auto_init=True` (默认值), 将自动获取分类信息和用户列表, 否则需手动 `.init()`
         """
         super().__init__()
+        if not os.path.isdir(self.headers_cache_path):
+            os.makedirs(self.headers_cache_path)
         self._session.headers.update(
             {'User-Agent': f"PyTujian/{datetime.datetime.now(pytz.timezone('PRC')).strftime('%Y%m%d%H')}"})
         if auto_init:
@@ -73,12 +78,22 @@ class TujianV2Api(BasicApi):
         """
         self.users = TujianUserCollection()
 
-    def __get_pic_headers(self, url: str) -> CaseInsensitiveDict:
+    def __get_pic_headers(self, pic: TujianPic) -> CaseInsensitiveDict:
         """
         获取 header
         """
-        pic_req = self._session.head(url)
-        return pic_req.headers
+        cache = os.path.join(self.headers_cache_path, pic.id)
+        if os.path.isfile(cache):
+            with open(cache, 'r', encoding='utf8') as f:
+                pic_header = CaseInsensitiveDict(json.loads(f.read()))
+                f.close()
+            return pic_header
+        else:
+            pic_req = self._session.head(pic.url)
+            with open(cache, 'w', encoding='utf8') as f:
+                f.write(json.dumps(dict(pic_req.headers)))
+                f.close()
+            return pic_req.headers
 
     def build_tujian_pic_colletcion(self, raw: list, desc='加载图片列表') -> TujianPicCollection:
         """
@@ -88,7 +103,7 @@ class TujianV2Api(BasicApi):
         with tqdm(total=len(raw), leave=False, desc=desc, unit='pic', unit_scale=True) as p:
             for i in raw:
                 _pic = TujianPic(raw=i, sorts=self.sorts, users=self.users)
-                _header = self.__get_pic_headers(_pic.url)
+                _header = self.__get_pic_headers(_pic)
                 _pic.init(
                     file_size=int(_header['content-length']),
                     file_type=str(_header['content-type'])
@@ -121,14 +136,15 @@ class TujianV2Api(BasicApi):
         加载图片归档
         """
         tpc = TujianPicCollection()
-        with tqdm(total=99, leave=False, desc=f'加载{sort.name}列表', unit='page', unit_scale=True) as p:
+        with tqdm(leave=False, desc=f'加载{sort.name}列表', unit='page', unit_scale=True) as p:
             first_page = self._session.get('https://v2.api.dailypics.cn/list', params={
                 'page': 1,
                 'size': 20,
                 'sort': sort.id
             }).json()
             p.total = first_page['maxpage']
-            tpc += self.build_tujian_pic_colletcion(first_page['result'], desc='加载第1页')
+            tpc += self.build_tujian_pic_colletcion(
+                first_page['result'], desc='加载第1页')
             p.update()
             for page in range(2, first_page['maxpage']+1):
                 res = self._session.get('https://v2.api.dailypics.cn/list', params={
@@ -136,7 +152,8 @@ class TujianV2Api(BasicApi):
                     'size': 20,
                     'sort': sort.id
                 }).json()
-                tpc += self.build_tujian_pic_colletcion(res['result'], desc=f'加载第{page}页')
+                tpc += self.build_tujian_pic_colletcion(
+                    res['result'], desc=f'加载第{page}页')
                 p.update()
         return tpc
 
@@ -167,6 +184,7 @@ class TujianV2Api(BasicApi):
                 pic_path = self.format_file_name(raw)
             if ignore_exist:
                 if os.path.isfile(pic_path):
+                    p.close()
                     return
             with open(pic_path, 'wb') as f:
                 for chunk in pic_res.iter_content(chunk_size=512):
