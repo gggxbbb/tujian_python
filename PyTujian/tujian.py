@@ -1,6 +1,6 @@
-from typing import NewType
 import datetime
 import json
+from typing import NewType
 
 from requests.sessions import session
 
@@ -46,9 +46,10 @@ class TujianSort():
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -82,9 +83,10 @@ class TujianSortCollection():
     """
     存储图片分类
     """
-    sorts: dict[UUID, TujianSort] = {}
+    sorts: dict[UUID, TujianSort]
 
     def __init__(self, raw: list[dict[str, object]]) -> None:
+        self.sorts = {}
         for sort in raw:
             id = UUID(sort['TID'])
             self.sorts[id] = TujianSort(id, sort['T_NAME'])
@@ -112,9 +114,10 @@ class TujianSortCollection():
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -145,9 +148,10 @@ class TujianUser():
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -178,10 +182,10 @@ class TujianUserCollection():
     """
     存储用户
     """
-    users: dict[str, TujianUser] = {}
+    users: dict[str, TujianUser]
 
     def __init__(self) -> None:
-        pass
+        self.users = {}
 
     def get(self, name) -> TujianUser:
         """
@@ -208,9 +212,10 @@ class TujianUserCollection():
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -242,9 +247,10 @@ class TujianPicSize():
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -278,9 +284,10 @@ class TujianPicColor():
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -342,9 +349,10 @@ class TujianPic():
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -405,16 +413,17 @@ class TujianPicCollection():
     """
     存储图
     """
-    pics: dict[UUID, TujianPic] = {}
+    pics: dict[UUID, TujianPic]
 
     def __init__(self) -> None:
-        pass
+        self.pics = {}
 
     # ==========
     # 实现迭代
-    _index = 0
+    _index: int
 
     def __iter__(self):
+        self._index = 0
         return self
 
     def __next__(self):
@@ -477,6 +486,14 @@ class TujianPicCollection():
         if isinstance(o, TujianPicCollection):
             for pic in o:
                 self.put(pic)
+            return self
+        else:
+            raise ValueError(f'Can not add {type(o)} to TujianPicCollection')
+    
+    def __sub__(self, o):
+        if isinstance(o, TujianPicCollection):
+            for pic in o:
+                del self.pics[pic.id]
             return self
         else:
             raise ValueError(f'Can not add {type(o)} to TujianPicCollection')
