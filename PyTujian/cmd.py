@@ -136,7 +136,7 @@ class CmdEnv():
         "-y             跳过下载确认",
         "-f             覆盖本地已存在图片",
         "",
-        "访问 https://docs.evax.top/project/1/doc/3/read 查看详细文档"
+        "访问 https://docs.evax.top/docs/pytujian 查看详细文档"
     ]
 
     def show_help(self):
