@@ -159,6 +159,21 @@ class TujianV2Api(BasicApi):
                 p.update()
         return tpc
 
+    def get_one(self, id: UUID) -> TujianPic:
+        """
+        加载单张图片
+        """
+        raw = self._session.get('https://v2.api.dailypics.cn/member', params={
+            'id': str(id)
+        }).json()
+        _pic = TujianPic(raw=raw, sorts=self.sorts, users=self.users)
+        _header = self.__get_pic_headers(_pic)
+        _pic.init(
+            file_size=int(_header['content-length']),
+            file_type=str(_header['content-type'])
+        )
+        return _pic
+
     def get_all(self) -> TujianPicCollection:
         """
         加载所有图片

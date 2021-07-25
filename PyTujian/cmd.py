@@ -4,7 +4,7 @@ from typing import Union
 
 from PyTujian.tujian import TujianPicCollection
 
-from .api import TujianV2Api
+from .api import TujianV2Api, UUID
 from .utils import format_size
 
 
@@ -25,7 +25,7 @@ def ensure_to_download(api: TujianV2Api, pics: TujianPicCollection, env: "CmdEnv
         if ch in ('Y', 'y'):
             return (True, e_pics)
         elif ch in ('N', 'n'):
-            return (True, e_pics)
+            return (False, e_pics)
         else:
             print('看起来你似乎还没明白将发生什么, 那就再问一次: ')
             return ensure_to_download(api, pics, env)
@@ -50,24 +50,56 @@ def cmd_download_today(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     today = api.get_today()
     return cmd_download(api, today, env)
 
+def cmd_download_one(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+    if len(args) == 1:
+        try:
+            pic = api.get_one(UUID(args[0]))
+        except:
+            print('参数异常, 请提供图片的有效 ID')
+            return False
+        tpc = TujianPicCollection()
+        tpc.put(pic)
+        return cmd_download(api, tpc, env)
+    else:
+        print('参数异常, 请提供图片的 ID')
+        return True
 
 def cmd_download_archive(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     if len(args) == 1:
         sort = api.sorts[env.args[1]]
         if sort is None:
-            print('请提供分类的有效 ID')
+            print('参数异常, 请提供分类的有效 ID')
             return False
         archive = api.get_archive(sort)
         return cmd_download(api, archive, env)
     else:
-        print('请提供分类的 ID')
+        print('参数异常, 请提供分类的 ID')
         return False
 
 
 def cmd_show_sorts(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     for s in api.sorts:
         print(s.name, s.id)
+    return True
 
+def cmd_show_info(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+    if len(args) == 1:
+        try:
+            pic = api.get_one(UUID(args[0]))
+        except Exception as e:
+            print(e)
+            print('参数异常, 请提供图片的有效 ID')
+            return False
+        print(pic.title)
+        print(f'{pic.date.isoformat()}|{pic.sort.name}')
+        print('')
+        print('以下为未处理的 Markdown 格式图片介绍:')
+        print(pic.content)
+        print()
+        print(f'访问 https://www.dailypics.cn/member/{pic.id} 查看更多信息')
+    else:
+        print('参数异常, 请提供图片的 ID')
+        return True
 
 class CmdEnv():
 
@@ -82,7 +114,9 @@ class CmdEnv():
         'all': cmd_download_all,
         'archive': cmd_download_archive,
         'sort': cmd_show_sorts,
-        'today': cmd_download_today
+        'today': cmd_download_today,
+        'info': cmd_show_info,
+        'get': cmd_download_one
     }
 
     cmd_intr = [
@@ -94,6 +128,8 @@ class CmdEnv():
         "archive <id>   获取指定分类的图片",
         "sort           打印分类列表",
         "today          获取今天图片",
+        "info <id>      获取图片详情",
+        "get <id>       下载单张图片"
         "",
         "-p <path>      指定图片存储目录",
         "--path=        指定图片存储目录",
