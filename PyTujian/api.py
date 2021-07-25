@@ -208,10 +208,11 @@ class TujianV2Api(BasicApi):
         """
         下载图片集
         """
-        with tqdm(total=len(raw), leave=True, desc='下载中', unit='pic', unit_scale=False) as p:
+        with tqdm(total=len(raw), leave=True, desc='下载中', unit='pic', unit_scale=False) as p, tqdm(total=raw.total_size(), leave=False, desc='下载中', unit='B', unit_scale=True, unit_divisor=1024) as p2:
             for pic in raw:
                 self.download_pic(pic, path_to_dir, ignore_exist)
                 p.update(1)
+                p2.update(pic.file_size)
 
     def count_exist(self, raw: TujianPicCollection, path_to_dir: str = None) -> TujianPicCollection:
         tpc = TujianPicCollection()
