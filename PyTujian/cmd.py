@@ -1,6 +1,8 @@
 import sys
-from getopt import gnu_getopt
+from getopt import GetoptError, gnu_getopt
 from typing import Union
+from datetime import datetime
+import pytz
 
 from PyTujian.tujian import TujianPicCollection
 
@@ -9,6 +11,9 @@ from .utils import format_size
 
 
 def ensure_to_download(api: TujianV2Api, pics: TujianPicCollection, env: "CmdEnv") -> Union[bool, TujianPicCollection]:
+    if len(pics) == 0:
+        print('没有可供下载的图片')
+        return (False, None)
     e_pics = api.count_exist(pics, env.path_to_dir)
     if env.ignore_exist:
         print(
@@ -42,13 +47,36 @@ def cmd_download(api: TujianV2Api, pics: TujianPicCollection, env: "CmdEnv"):
 
 
 def cmd_download_all(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+    print('正在加载图片列表...')
     all = api.get_all()
+    print('完成')
+    print()
     return cmd_download(api, all, env)
 
 
 def cmd_download_today(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+    print('正在加载今日列表...')
     today = api.get_today()
-    return cmd_download(api, today, env)
+    print('完成')
+    print()
+    today_date = datetime.now(pytz.timezone('PRC')).strftime('%Y-%m-%d')
+    not_today = TujianPicCollection()
+    for pic in today:
+        if not pic.date.isoformat() == today_date:
+            not_today.put(pic)
+    if not len(not_today) == 1:
+        print(
+            f'在总共 {len(today)} 张图片中, 有 {len(not_today)} 张不是今日({today_date})更新的:')
+        for pic in not_today:
+            print(f'{pic.sort.name}: {pic.title} 更新于 {pic.date.isoformat()}')
+        if not env.only_today:
+            print('你可以使用参数 -s 来只下载今日更新的图片')
+        print()
+    if env.only_today:
+        return cmd_download(api, today - not_today, env)
+    else:
+        return cmd_download(api, today, env)
+
 
 def cmd_download_one(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     if len(args) == 1:
@@ -64,13 +92,17 @@ def cmd_download_one(api: TujianV2Api, args: list[str], env: "CmdEnv"):
         print('参数异常, 请提供图片的 ID')
         return True
 
+
 def cmd_download_archive(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     if len(args) == 1:
         sort = api.sorts[env.args[1]]
         if sort is None:
             print('参数异常, 请提供分类的有效 ID')
             return False
+        print(f'正在加载{sort.name}列表...')
         archive = api.get_archive(sort)
+        print('完成')
+        print()
         return cmd_download(api, archive, env)
     else:
         print('参数异常, 请提供分类的 ID')
@@ -81,6 +113,7 @@ def cmd_show_sorts(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     for s in api.sorts:
         print(s.name, s.id)
     return True
+
 
 def cmd_show_info(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     if len(args) == 1:
@@ -101,11 +134,13 @@ def cmd_show_info(api: TujianV2Api, args: list[str], env: "CmdEnv"):
         print('参数异常, 请提供图片的 ID')
         return True
 
+
 class CmdEnv():
 
     path_to_dir = 'Tujian'
     ensure_before_download = True
     ignore_exist = True
+    only_today = False
 
     args: list[str]
     api: TujianV2Api
@@ -135,6 +170,7 @@ class CmdEnv():
         "--path=        指定图片存储目录",
         "-y             跳过下载确认",
         "-f             覆盖本地已存在图片",
+        "-s             today 命令只下载今日图片",
         "",
         "访问 https://docs.evax.top/docs/pytujian 查看详细文档"
     ]
@@ -145,10 +181,14 @@ class CmdEnv():
 
     def __init__(self) -> None:
         self.api = TujianV2Api()
-        opts, args = gnu_getopt(sys.argv[1:],
-                                shortopts='p:yf',
+        try:
+            opts, args = gnu_getopt(sys.argv[1:],
+                                shortopts='p:yfs',
                                 longopts=['path=']
-                                )
+                                    )
+        except GetoptError:
+            print('参数异常')
+            sys.exit(1)
         self.args = args
 
         for o in opts:
@@ -158,6 +198,8 @@ class CmdEnv():
                 self.ensure_before_download = False
             elif o[0] in ('-f'):
                 self.ignore_exist = False
+            elif o[0] in ('-s'):
+                self.only_today = True
 
     def run_cmd(self):
         if len(self.args) == 0:

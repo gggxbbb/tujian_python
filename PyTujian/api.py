@@ -93,6 +93,7 @@ class TujianV2Api(BasicApi):
             with open(cache, 'r', encoding='utf8') as f:
                 pic_header = CaseInsensitiveDict(json.loads(f.read()))
                 f.close()
+            time.sleep(0.01)
             return pic_header
         else:
             pic_req = self._session.head(pic.url)
