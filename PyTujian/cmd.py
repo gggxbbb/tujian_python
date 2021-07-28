@@ -1,12 +1,13 @@
 import sys
-from getopt import GetoptError, gnu_getopt
-from typing import Union
 from datetime import datetime
+from getopt import GetoptError, gnu_getopt
+from typing import List, Union
+
 import pytz
 
 from PyTujian.tujian import TujianPicCollection
 
-from .api import TujianV2Api, UUID
+from .api import UUID, TujianV2Api
 from .utils import format_size
 
 
@@ -46,7 +47,7 @@ def cmd_download(api: TujianV2Api, pics: TujianPicCollection, env: "CmdEnv"):
     return ch
 
 
-def cmd_download_all(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+def cmd_download_all(api: TujianV2Api, args: List[str], env: "CmdEnv"):
     print('正在加载图片列表...')
     all = api.get_all()
     print('完成')
@@ -54,7 +55,7 @@ def cmd_download_all(api: TujianV2Api, args: list[str], env: "CmdEnv"):
     return cmd_download(api, all, env)
 
 
-def cmd_download_today(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+def cmd_download_today(api: TujianV2Api, args: List[str], env: "CmdEnv"):
     print('正在加载今日列表...')
     today = api.get_today()
     print('完成')
@@ -78,7 +79,7 @@ def cmd_download_today(api: TujianV2Api, args: list[str], env: "CmdEnv"):
         return cmd_download(api, today, env)
 
 
-def cmd_download_one(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+def cmd_download_one(api: TujianV2Api, args: List[str], env: "CmdEnv"):
     if len(args) == 1:
         try:
             pic = api.get_one(UUID(args[0]))
@@ -93,7 +94,7 @@ def cmd_download_one(api: TujianV2Api, args: list[str], env: "CmdEnv"):
         return True
 
 
-def cmd_download_archive(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+def cmd_download_archive(api: TujianV2Api, args: List[str], env: "CmdEnv"):
     if len(args) == 1:
         sort = api.sorts[env.args[1]]
         if sort is None:
@@ -109,13 +110,13 @@ def cmd_download_archive(api: TujianV2Api, args: list[str], env: "CmdEnv"):
         return False
 
 
-def cmd_show_sorts(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+def cmd_show_sorts(api: TujianV2Api, args: List[str], env: "CmdEnv"):
     for s in api.sorts:
         print(s.name, s.id)
     return True
 
 
-def cmd_show_info(api: TujianV2Api, args: list[str], env: "CmdEnv"):
+def cmd_show_info(api: TujianV2Api, args: List[str], env: "CmdEnv"):
     if len(args) == 1:
         try:
             pic = api.get_one(UUID(args[0]))
@@ -142,7 +143,7 @@ class CmdEnv():
     ignore_exist = True
     only_today = False
 
-    args: list[str]
+    args: List[str]
     api: TujianV2Api
 
     cmd_list = {
@@ -180,11 +181,15 @@ class CmdEnv():
             print(msg)
 
     def __init__(self) -> None:
-        self.api = TujianV2Api()
+        try:
+            self.api = TujianV2Api()
+        except Exception as e:
+            print('初始化 API 失败:')
+            print('\n'.join(e.args))
         try:
             opts, args = gnu_getopt(sys.argv[1:],
-                                shortopts='p:yfs',
-                                longopts=['path=']
+                                    shortopts='p:yfs',
+                                    longopts=['path=']
                                     )
         except GetoptError:
             print('参数异常')

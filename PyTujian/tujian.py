@@ -1,8 +1,6 @@
 import datetime
 import json
-from typing import NewType
-
-from requests.sessions import session
+from typing import Dict, List, NewType
 
 UUID = NewType('UUID', str)
 TujianColor = NewType('TujianColor', str)
@@ -83,9 +81,9 @@ class TujianSortCollection():
     """
     存储图片分类
     """
-    sorts: dict[UUID, TujianSort]
+    sorts: Dict[UUID, TujianSort]
 
-    def __init__(self, raw: list[dict[str, object]]) -> None:
+    def __init__(self, raw: List[Dict[str, object]]) -> None:
         self.sorts = {}
         for sort in raw:
             id = UUID(sort['TID'])
@@ -182,7 +180,7 @@ class TujianUserCollection():
     """
     存储用户
     """
-    users: dict[str, TujianUser]
+    users: Dict[str, TujianUser]
 
     def __init__(self) -> None:
         self.users = {}
@@ -342,7 +340,7 @@ class TujianPic():
         self.user = users.get(raw['username'])
         self.file_size = file_size
         self.file_type = file_type
-    
+
     def init(self, file_size: int, file_type: str):
         self.file_size = file_size
         self.file_type = file_type
@@ -413,7 +411,7 @@ class TujianPicCollection():
     """
     存储图
     """
-    pics: dict[UUID, TujianPic]
+    pics: Dict[UUID, TujianPic]
 
     def __init__(self) -> None:
         self.pics = {}
@@ -456,7 +454,7 @@ class TujianPicCollection():
         """
         if not pic.id in self.pics.keys():
             self.pics[pic.id] = pic
-    
+
     def total_size(self) -> int:
         t = 0
         for i in self.pics.values():
@@ -481,7 +479,7 @@ class TujianPicCollection():
         使用len()获取数量
         """
         return len(self.pics)
-    
+
     def __add__(self, o):
         if isinstance(o, TujianPicCollection):
             for pic in o:
@@ -489,7 +487,7 @@ class TujianPicCollection():
             return self
         else:
             raise ValueError(f'Can not add {type(o)} to TujianPicCollection')
-    
+
     def __sub__(self, o):
         if isinstance(o, TujianPicCollection):
             for pic in o:

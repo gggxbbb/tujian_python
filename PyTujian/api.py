@@ -1,6 +1,6 @@
 import os
-from datetime import datetime
 import time
+from datetime import datetime
 
 import pytz
 from requests import Session
