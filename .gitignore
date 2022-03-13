@@ -9,3 +9,4 @@ _test*
 venv
 debug*
 debug/
+*.log
