@@ -19,7 +19,8 @@ setuptools.setup(
     install_requires=[
         'pytz>=2021.1',
         'tqdm>=4.61.2',
-        'requests>=2.26.0'
+        'requests>=2.26.0',
+        'rich>=11.0.0',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

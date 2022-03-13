@@ -10,3 +10,4 @@ venv
 debug*
 debug/
 *.log
+temp_*
