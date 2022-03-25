@@ -3,6 +3,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/PyTujian)
 ![PyPI](https://img.shields.io/pypi/v/PyTujian)
 [![Upload Python Package](https://github.com/gggxbbb/tujian_python/actions/workflows/python-publish.yml/badge.svg)](https://github.com/gggxbbb/tujian_python/actions/workflows/python-publish.yml)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgggxbbb%2Ftujian_python.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgggxbbb%2Ftujian_python?ref=badge_shield)
 
 一个 Tujian 的简易命令行工具
 
@@ -34,3 +35,6 @@ pip3 install PyTujian
 ## 其他
 
 详细说明和作为库使用参见[文档](https://docs.evax.top/docs/pytujian).
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgggxbbb%2Ftujian_python.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgggxbbb%2Ftujian_python?ref=badge_large)
